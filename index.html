@@ -1,1 +1,322 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#100d1c">
+<title>QUIZ LIFE RPG</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#100d1c;color:#f5f0ff;font-family:system-ui,sans-serif}
+header{text-align:center;padding:25px 12px;background:linear-gradient(135deg,#49277d,#171127)}
+h1{margin:0;font-size:28px;letter-spacing:1px}
+h1 span{color:#ffd166}
+header p{color:#d0c3e7;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}
+.stat,.panel{background:#211a35;border:1px solid #43335b;border-radius:15px;padding:14px}
+.stat small{display:block;color:#b8adcc;font-size:11px}
+.stat strong{font-size:18px}
+nav{display:flex;gap:6px;padding:0 12px 12px;overflow-x:auto}
+button{font:inherit;cursor:pointer}
+nav button{flex:1;min-width:68px;padding:11px 5px;background:#2b2240;color:white;border:1px solid #49365f;border-radius:10px}
+nav button.active,.primary{background:#a780ff;color:#170e29;font-weight:800}
+main{max-width:650px;margin:auto;padding:0 12px 30px}
+.panel{margin-bottom:12px;padding:17px}
+h2{font-size:21px;margin:5px 0 10px}
+.muted{color:#b9adcf;font-size:14px}
+.tag{font-size:12px;color:#ffd166;font-weight:bold}
+button.primary,.answer{display:block;width:100%;padding:14px;margin-top:9px;border-radius:11px}
+.primary{border:0}
+.answer{background:#2c2341;color:white;border:1px solid #514068;text-align:left}
+.answer:disabled{opacity:.7}
+.hidden{display:none!important}
+.notice{background:#302546;padding:12px;border-radius:10px;margin-top:12px}
+.progress{height:8px;background:#413454;border-radius:8px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:#a780ff;width:0}
+.item{padding:13px 0;border-bottom:1px solid #443653}
+.item:last-child{border:0}
+footer{text-align:center;color:#9589ae;padding:18px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>QUIZ LIFE <span>RPG</span></h1>
+<p>Twoje życie. Twoje wybory. Twoja legenda.</p>
+</header>
 
+<div class="stats">
+<div class="stat"><small>💰 GOTÓWKA</small><strong id="money">1025 $</strong></div>
+<div class="stat"><small>⭐ POZIOM</small><strong id="level">8</strong></div>
+<div class="stat"><small>🔥 SERIA</small><strong id="streak">0</strong></div>
+</div>
+
+<nav>
+<button class="active" data-tab="home">🏠 Start</button>
+<button data-tab="quiz">🧠 Quiz</button>
+<button data-tab="shop">🛒 Sklep</button>
+<button data-tab="bag">🎒 Ekwipunek</button>
+</nav>
+
+<main>
+<section id="home" class="tab">
+<div class="panel">
+<div class="tag">TWOJA PRZYGODA</div>
+<h2>Witaj w QUIZ LIFE RPG!</h2>
+<p class="muted">Odpowiadaj na pytania o grach, zdobywaj dolary, kupuj przedmioty i rozwijaj swoją postać.</p>
+<div class="progress"><div id="xpbar"></div></div>
+<p class="muted" id="xptext">Postęp do następnego poziomu</p>
+<button class="primary" onclick="showTab('quiz')">▶ ROZPOCZNIJ QUIZ</button>
+</div>
+<div class="panel">
+<h2>📊 Statystyki</h2>
+<p>Rozwiązane pytania: <b id="total">0</b></p>
+<p>Poprawne odpowiedzi: <b id="correct">0</b></p>
+<p>Najlepsza seria: <b id="best">0</b></p>
+</div>
+</section>
+
+<section id="quiz" class="tab hidden">
+<div class="panel">
+<div class="tag" id="qtag">POZIOM 8</div>
+<h2 id="question">Gotowy na wyzwanie?</h2>
+<div id="answers"></div>
+<div id="feedback" class="notice hidden"></div>
+<button id="next" class="primary hidden" onclick="nextQuestion()">NASTĘPNE PYTANIE →</button>
+</div>
+</section>
+
+<section id="shop" class="tab hidden">
+<div class="panel">
+<h2>🛒 Sklep RPG</h2>
+<p class="muted">Wydawaj zarobione dolary na ulepszenia i przedmioty.</p>
+<div id="shopitems"></div>
+</div>
+</section>
+
+<section id="bag" class="tab hidden">
+<div class="panel">
+<h2>🎒 Ekwipunek</h2>
+<div id="inventory"></div>
+</div>
+<div class="panel">
+<h2>⚙️ Ustawienia</h2>
+<button class="primary" onclick="resetGame()">ZRESETUJ POSTĘP</button>
+<p class="muted">Reset usuwa zapis gry z tej przeglądarki.</p>
+</div>
+</section>
+</main>
+<footer>QUIZ LIFE RPG • Wersja 1.0</footer>
+
+<script>
+const initial={
+money:1025,level:8,streak:0,best:0,correct:0,total:0,
+multiplier:2,bonus:true,
+items:[
+"Dead by Daylight",
+"Pakiet skinów superbohatera",
+"Emotka GG",
+"Emotka taneczna",
+"Pakiet DLC: nowe przygody"
+],
+bought:[]
+};
+
+let state;
+try{
+const saved=JSON.parse(localStorage.getItem("qlrpg_save"));
+state=saved?{...initial,...saved}: {...initial};
+}catch(e){state={...initial};}
+
+const questions=[
+{q:"Która postać jest znana jako Czarna Wdowa?",a:["Natasha Romanoff","Wanda Maximoff","Carol Danvers","Hope van Dyne"],c:0},
+{q:"W jakiej grze naprawia się generatory, uciekając przed zabójcą?",a:["Fortnite","Dead by Daylight","Minecraft","Overwatch 2"],c:1},
+{q:"Jak nazywa się młot Thora?",a:["Stormbreaker","Mjolnir","Excalibur","Gungnir"],c:1},
+{q:"Kto jest jednym z głównych bohaterów Spider-Man 2?",a:["Peter Parker","Tony Stark","Steve Rogers","Bruce Banner"],c:0},
+{q:"Jaki gatunek reprezentuje Minecraft?",a:["Wyłącznie wyścigi","Sandbox","Symulator lotu","Bijatyka"],c:1},
+{q:"Który przeciwnik walczy ze Spider-Manem?",a:["Joker","Bowser","Green Goblin","Ganondorf"],c:2},
+{q:"Co robisz głównie w Fortnite Battle Royale?",a:["Walczysz o zwycięstwo","Naprawiasz generatory","Gotujesz potrawy","Budujesz tory kolejowe"],c:0},
+{q:"Z jakiej serii pochodzi Leon S. Kennedy?",a:["Resident Evil","The Sims","Rocket League","Forza Horizon"],c:0},
+{q:"Która firma stworzyła PlayStation?",a:["Microsoft","Nintendo","Sony","Sega"],c:2},
+{q:"Która postać należy do Avengers?",a:["Shrek","Iron Man","Geralt","Lara Croft"],c:1},
+{q:"Na jakiej platformie tworzy się gry w Roblox?",a:["Roblox Studio","Steam Studio","PlayStation Maker","Xbox Creator"],c:0},
+{q:"Jak nazywa się główny bohater God of War?",a:["Kratos","Nathan Drake","Ezio","Arthur Morgan"],c:0},
+{q:"Która gra jest znana z budowania z bloków?",a:["Minecraft","Tekken","FIFA","Gran Turismo"],c:0},
+{q:"Kto jest przyjacielem Spider-Mana i również ma pajęcze moce?",a:["Miles Morales","Thanos","Loki","Hawkeye"],c:0},
+{q:"Jaki jest cel ocalałych w Dead by Daylight?",a:["Naprawić generatory i uciec","Zdobyć puchar","Pokonać smoka","Zbudować dom"],c:0},
+{q:"Jak nazywa się konsola Nintendo?",a:["Switch","PlayStation","Xbox","Steam Machine"],c:0}
+];
+
+const products=[
+{id:"mult3",name:"💎 Mnożnik ×3",price:1200,desc:"Zwiększa nagrodę za poprawną odpowiedź.",type:"mult"},
+{id:"bonus2",name:"🔥 Bonus serii +200 $",price:800,desc:"Bonus za trzy poprawne odpowiedzi z rzędu.",type:"bonus"},
+{id:"dbd",name:"🎮 Dead by Daylight",price:500,desc:"Przedmiot kolekcjonerski.",type:"item"},
+{id:"hero",name:"🦸 Pakiet superbohatera",price:700,desc:"Pakiet skórek do kolekcji.",type:"item"},
+{id:"gg",name:"✨ Emotka GG",price:150,desc:"Dodaj emotkę do kolekcji.",type:"item"},
+{id:"dance",name:"💃 Emotka taneczna",price:250,desc:"Dodaj taniec do kolekcji.",type:"item"},
+{id:"dlc",name:"📦 Pakiet nowych przygód",price:400,desc:"Pakiet DLC do kolekcji.",type:"item"}
+];
+
+let currentQuestion=null;
+let locked=false;
+let used=[];
+
+function save(){
+try{localStorage.setItem("qlrpg_save",JSON.stringify(state));}catch(e){}
+}
+
+function showTab(tab){
+document.querySelectorAll(".tab").forEach(el=>el.classList.toggle("hidden",el.id!==tab));
+document.querySelectorAll("nav button").forEach(el=>el.classList.toggle("active",el.dataset.tab===tab));
+if(tab==="shop")renderShop();
+if(tab==="bag")renderBag();
+}
+
+document.querySelectorAll("nav button").forEach(btn=>{
+btn.addEventListener("click",()=>showTab(btn.dataset.tab));
+});
+
+function render(){
+document.getElementById("money").textContent=state.money+" $";
+document.getElementById("level").textContent=state.level;
+document.getElementById("streak").textContent=state.streak;
+document.getElementById("total").textContent=state.total;
+document.getElementById("correct").textContent=state.correct;
+document.getElementById("best").textContent=state.best;
+const xp=state.correct%5;
+document.getElementById("xpbar").style.width=(xp*20)+"%";
+document.getElementById("xptext").textContent="Postęp poziomu: "+xp+"/5 poprawnych odpowiedzi";
+save();
+}
+
+function startQuiz(){
+used=[];
+loadQuestion();
+}
+
+function loadQuestion(){
+locked=false;
+document.getElementById("feedback").classList.add("hidden");
+document.getElementById("next").classList.add("hidden");
+const answers=document.getElementById("answers");
+answers.innerHTML="";
+if(used.length===questions.length)used=[];
+let available=questions.map((q,i)=>i).filter(i=>!used.includes(i));
+let index=available[Math.floor(Math.random()*available.length)];
+used.push(index);
+currentQuestion=questions[index];
+document.getElementById("qtag").textContent="POZIOM "+state.level+" • PYTANIE "+(used.length);
+document.getElementById("question").textContent=currentQuestion.q;
+currentQuestion.a.forEach((answer,i)=>{
+const btn=document.createElement("button");
+btn.className="answer";
+btn.textContent=String.fromCharCode(65+i)+". "+answer;
+btn.onclick=()=>checkAnswer(i,btn);
+answers.appendChild(btn);
+});
+}
+
+function checkAnswer(index,button){
+if(locked)return;
+locked=true;
+state.total++;
+document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
+const feedback=document.getElementById("feedback");
+feedback.classList.remove("hidden");
+if(index===currentQuestion.c){
+state.correct++;
+state.streak++;
+state.best=Math.max(state.best,state.streak);
+let reward=100*state.multiplier;
+let message="Poprawna odpowiedź! Zdobywasz "+reward+" $.";
+state.money+=reward;
+if(state.bonus&&state.streak%3===0){
+state.money+=100;
+message+=" Bonus serii: +100 $.";
+}
+button.style.borderColor="#66edb2";
+feedback.textContent="✅ "+message;
+if(state.correct%5===0){
+state.level++;
+feedback.textContent+=" Awans! Wchodzisz na poziom "+state.level+"!";
+}
+}else{
+state.streak=0;
+button.style.borderColor="#ff7777";
+feedback.textContent="❌ Nie tym razem! Poprawna odpowiedź: "+currentQuestion.a[currentQuestion.c]+".";
+}
+document.getElementById("next").classList.remove("hidden");
+render();
+}
+
+function nextQuestion(){loadQuestion();}
+
+function renderShop(){
+const box=document.getElementById("shopitems");
+box.innerHTML="";
+products.forEach(p=>{
+const owned=state.bought.includes(p.id);
+const item=document.createElement("div");
+item.className="item";
+const title=document.createElement("h3");
+title.textContent=p.name;
+const desc=document.createElement("p");
+desc.className="muted";
+desc.textContent=p.desc;
+const price=document.createElement("p");
+price.textContent="💰 "+p.price+" $";
+const btn=document.createElement("button");
+btn.className="primary";
+btn.textContent=owned?"JUŻ KUPIONO": "KUP";
+btn.disabled=owned||state.money<p.price;
+btn.onclick=()=>buy(p);
+item.append(title,desc,price,btn);
+box.appendChild(item);
+});
+}
+
+function buy(p){
+if(state.bought.includes(p.id)||state.money<p.price)return;
+state.money-=p.price;
+state.bought.push(p.id);
+if(p.type==="mult")state.multiplier=3;
+if(p.type==="bonus")state.bonus=true;
+if(p.type==="item")state.items.push(p.name.replace(/^[^ ]+ /,""));
+render();
+renderShop();
+renderBag();
+}
+
+function renderBag(){
+const box=document.getElementById("inventory");
+box.innerHTML="";
+if(!state.items.length){
+box.textContent="Twój ekwipunek jest pusty.";
+}else{
+state.items.forEach(item=>{
+const div=document.createElement("div");
+div.className="item";
+div.textContent="🎁 "+item;
+box.appendChild(div);
+});
+}
+const stats=document.createElement("div");
+stats.className="item";
+stats.innerHTML="<b>Ulepszenia</b><p class='muted'>Mnożnik nagrody: ×"+state.multiplier+"</p><p class='muted'>Bonus serii: "+(state.bonus?"aktywny":"nieaktywny")+"</p>";
+box.appendChild(stats);
+}
+
+function resetGame(){
+if(!confirm("Na pewno zresetować cały postęp?"))return;
+try{localStorage.removeItem("qlrpg_save");}catch(e){}
+state={...initial,items:[...initial.items],bought:[]};
+used=[];
+render();
+renderBag();
+renderShop();
+showTab("home");
+}
+
+render();
+</script>
+</body>
+</html>
