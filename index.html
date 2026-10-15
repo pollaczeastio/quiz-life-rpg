@@ -3,189 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b0b13">
 <title>QUIZ LIFE RPG</title>
 
 <style>
 :root {
   --bg:#0b0b13;
   --panel:#151522;
-  --panel2:#222236;
+  --panel2:#25253a;
   --text:#f7f5ff;
-  --muted:#a5a2bd;
+  --muted:#aaa7c0;
   --accent:#9568ff;
-  --accent2:#5ce5ff;
-  --border:#ffffff1c;
+  --border:#ffffff20;
 }
 * { box-sizing:border-box; }
 body {
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-family:Arial,sans-serif;
 }
-button,input,select { font:inherit; }
-button { cursor:pointer; transition:.15s; }
-button:hover { filter:brightness(1.12); }
-button:disabled { opacity:.45;cursor:not-allowed; }
-button:focus-visible,input:focus-visible,select:focus-visible {
-  outline:2px solid var(--accent2);
+button,select,input { font:inherit; }
+button { cursor:pointer; }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.app { max-width:1150px; margin:auto; padding:16px; }
+header,.row,.profile {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px;
 }
-.app { max-width:1150px;margin:auto;padding:16px; }
-header {
-  display:flex;justify-content:space-between;
-  align-items:center;gap:10px;margin-bottom:16px;
-}
-.brand { display:flex;align-items:center;gap:10px;font-weight:950; }
+header { margin-bottom:18px; }
 .logo {
-  width:44px;height:44px;border-radius:14px;
-  display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--accent),#5143ce);
-  font-size:25px;
+  display:flex; align-items:center; gap:10px;
+  font-weight:900; font-size:20px;
 }
-.brand small {
-  display:block;color:var(--muted);font-size:9px;
-  letter-spacing:2px;margin-top:3px;
+.logo span {
+  background:var(--accent); padding:12px;
+  border-radius:14px;
 }
-.head-actions { display:flex;gap:7px; }
-.layout { display:grid;grid-template-columns:190px 1fr;gap:16px; }
-.sidebar,.panel,.stat,.hero {
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:18px;
+.layout {
+  display:grid; grid-template-columns:190px minmax(0,1fr); gap:16px;
 }
-.sidebar { padding:8px;height:max-content;position:sticky;top:10px; }
+.sidebar,.panel,.hero,.stat {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+.sidebar { padding:8px; height:max-content; }
+button {
+  border:1px solid var(--border);
+  border-radius:10px; padding:11px;
+  color:var(--text); background:var(--panel2);
+}
 .nav {
-  display:flex;align-items:center;gap:10px;width:100%;
-  padding:12px;border:0;background:transparent;color:var(--muted);
-  border-radius:12px;text-align:left;font-weight:750;margin:2px 0;
+  display:block; width:100%; margin:3px 0;
+  text-align:left; font-weight:bold;
 }
-.nav span { font-size:18px;width:23px; }
-.nav.active { background:#9568ff35;color:var(--text); }
-.sidehint {
-  padding:12px;margin-top:10px;background:var(--panel2);
-  border-radius:12px;font-size:11px;color:var(--muted);line-height:1.5;
-}
+.nav.active { background:var(--accent); }
 .main { min-width:0; }
 .hero {
-  padding:25px;
-  background:linear-gradient(115deg,#9568ff38,var(--panel) 75%);
+  padding:24px;
+  background:linear-gradient(120deg,#9568ff45,var(--panel));
 }
-.eyebrow { font-size:10px;font-weight:900;letter-spacing:2px;color:var(--accent2); }
-h1 { font-size:clamp(28px,5vw,42px);line-height:1.1;margin:12px 0; }
-h2 { font-size:19px;margin:0 0 12px; }
-h3 { font-size:15px;margin:0 0 5px; }
-p { line-height:1.5; }
-.muted { color:var(--muted); }
-.btn,.secondary,.iconbtn {
-  border:1px solid var(--border);border-radius:12px;padding:11px 14px;
+h1 { font-size:clamp(27px,5vw,42px); margin:12px 0; }
+h2 { font-size:19px; }
+.muted { color:var(--muted); line-height:1.5; }
+.btn { background:var(--accent); border:0; font-weight:bold; }
+.panel { padding:16px; margin-top:14px; }
+.stats {
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px; margin-top:14px;
 }
-.btn {
-  background:linear-gradient(110deg,var(--accent),#5645d4);
-  color:white;border:0;font-weight:850;
-}
-.secondary,.iconbtn { background:var(--panel2);color:var(--text); }
-.coins { color:#ffd66b;font-weight:900; }
-.stats { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:13px 0; }
-.stat { padding:14px; }
-.stat-label { color:var(--muted);font-size:11px; }
-.stat-value { font-size:24px;font-weight:950;margin-top:4px; }
-.stat-icon { float:right;font-size:20px; }
-.panel { padding:18px;margin-bottom:13px; }
-.section-head {
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;margin-bottom:12px;
-}
-.badge {
-  display:inline-block;padding:6px 9px;border-radius:9px;
-  background:#9568ff30;color:var(--accent2);font-size:10px;font-weight:900;
-}
-.progress { height:8px;background:var(--panel2);border-radius:20px;overflow:hidden;margin:10px 0; }
-.progress div {
-  height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
-}
-.grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
-.answer {
-  background:var(--panel2);border:1px solid var(--border);
-  border-radius:12px;padding:13px;text-align:left;color:var(--text);
-  font-weight:700;min-height:48px;
-}
-.answer.correct { background:#164333;border-color:#42dca0; }
-.answer.wrong { background:#461d2a;border-color:#ff687d; }
-.quizmeta { display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px; }
-.question { font-size:clamp(18px,3vw,24px);line-height:1.4;font-weight:850;margin:20px 0; }
-.feedback { padding:13px;border-radius:12px;background:var(--panel2);margin-top:13px;line-height:1.5; }
-.shopgrid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px; }
-.item { background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:8px;min-width:0; }
-.itemico { font-size:34px; }
-.item p { font-size:12px;color:var(--muted);margin:0; }
-.price { color:#ffd66b;font-weight:900; }
-.item .btn,.item .secondary { margin-top:auto;font-size:12px;padding:10px; }
-.profile {
-  display:flex;align-items:center;gap:13px;padding:15px;
-  background:var(--panel2);border:1px solid var(--border);
-  border-radius:15px;margin:12px 0;
-}
-.avatar {
-  width:62px;height:62px;display:grid;place-items:center;
-  border-radius:18px;background:#323247;font-size:32px;flex-shrink:0;
-}
-.avatar.neon { border:2px solid #d18aff;box-shadow:0 0 9px #b85cff,0 0 25px #8b5cf6; }
-.avatar.fire { border:2px solid #ff944d;box-shadow:0 0 20px #ff6b35; }
-.avatar.diamond { border:2px solid #7cecff;box-shadow:0 0 18px #4be3ff; }
-.worldgrid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0; }
-.worldtile {
-  min-height:83px;background:var(--panel2);border:1px dashed var(--border);
-  border-radius:12px;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:5px;text-align:center;padding:5px;color:var(--text);
-}
-.worldtile.filled { border-style:solid;border-color:var(--accent);font-size:25px; }
-.worldtile small { font-size:10px;color:var(--muted); }
-.emoterow { display:flex;gap:8px;flex-wrap:wrap; }
-.emotebtn {
-  background:var(--panel2);border:1px solid var(--border);color:var(--text);
-  border-radius:12px;padding:12px;min-width:65px;font-size:22px;
-}
-.emotebtn small { display:block;font-size:10px;color:var(--muted);margin-top:5px; }
-.settingsrow {
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;padding:13px 0;border-bottom:1px solid var(--border);
-}
-.settingsrow:last-child { border:0; }
-.settingsrow p { color:var(--muted);font-size:12px;margin:4px 0 0; }
-select,input[type=color] {
-  background:var(--panel2);color:var(--text);
-  border:1px solid var(--border);border-radius:10px;padding:9px;max-width:55%;
-}
-input[type=color] { width:55px;height:40px;padding:3px; }
-.notice {
-  position:fixed;bottom:18px;left:50%;transform:translate(-50%,15px);
-  background:var(--panel2);border:1px solid var(--border);border-radius:13px;
-  padding:12px 17px;opacity:0;pointer-events:none;transition:.2s;
-  z-index:20;max-width:90%;text-align:center;box-shadow:0 8px 35px #0007;
-}
-.notice.show { opacity:1;transform:translate(-50%,0); }
+.stat { padding:13px; }
+.stat strong { display:block; font-size:23px; margin-top:6px; }
 .hidden { display:none!important; }
-footer { text-align:center;color:var(--muted);font-size:11px;padding:20px; }
-body.light { --bg:#f0eff8;--panel:#fff;--panel2:#e8e6f2;--text:#201c32;--muted:#69647e;--border:#30205020; }
-@media(max-width:720px) {
-  .app { padding:10px; }
+.grid {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.shopgrid {
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.item {
+  background:var(--panel2); border:1px solid var(--border);
+  border-radius:12px; padding:12px;
+  display:flex; flex-direction:column; gap:9px;
+  min-width:0;
+}
+.itemicon { font-size:32px; }
+.item p { color:var(--muted); font-size:13px; margin:0; }
+.item button { margin-top:auto; }
+.price { color:#ffd66b; font-weight:bold; }
+.avatar {
+  font-size:35px; padding:12px;
+  background:var(--panel2); border-radius:14px;
+}
+.worldgrid {
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px; margin:14px 0;
+}
+.worldtile {
+  min-height:85px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:5px;
+  font-size:24px; padding:5px;
+  border:1px dashed var(--border);
+}
+.worldtile small { font-size:10px; color:var(--muted); }
+.worldtile.filled { border:1px solid var(--accent); }
+.progress {
+  height:8px; background:var(--panel2);
+  border-radius:20px; overflow:hidden; margin:12px 0;
+}
+.progress div { height:100%; background:var(--accent); width:0; }
+.notice {
+  position:fixed; bottom:18px; left:50%;
+  transform:translateX(-50%);
+  padding:12px 18px; border-radius:12px;
+  background:var(--panel2); border:1px solid var(--border);
+  display:none; max-width:90%; z-index:10;
+}
+.notice.show { display:block; }
+footer { text-align:center; padding:20px; color:var(--muted); }
+body.light {
+  --bg:#f0eff8; --panel:#fff; --panel2:#e8e6f2;
+  --text:#201c32; --muted:#69647e; --border:#30205025;
+}
+@media(max-width:700px) {
+  .app { padding:9px; }
   .layout { grid-template-columns:1fr; }
-  .sidebar { position:static;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:5px; }
-  .nav { display:flex;flex-direction:column;gap:4px;justify-content:center;text-align:center;padding:8px 1px;font-size:10px;margin:0; }
-  .nav span { width:auto;font-size:17px; }
-  .sidehint { display:none; }
-  .hero { padding:20px; }
-  .panel { padding:14px; }
-  .stats { gap:7px; }
-  .stat { padding:10px; }
-  .stat-value { font-size:20px; }
+  .sidebar { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
+  .nav { text-align:center; font-size:12px; padding:9px 3px; }
   .shopgrid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .worldgrid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-}
-@media(max-width:390px) {
-  .brand { font-size:12px; }
-  .logo { width:38px;height:38px; }
-  .worldgrid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .hero { padding:18px; }
 }
 </style>
 </head>
@@ -193,96 +142,115 @@ body.light { --bg:#f0eff8;--panel:#fff;--panel2:#e8e6f2;--text:#201c32;--muted:#
 <body>
 <div class="app">
 <header>
-  <div class="brand"><div class="logo">⚡</div><div>QUIZ LIFE RPG<small>YOUR GAMING JOURNEY</small></div></div>
-  <div class="head-actions">
-    <button class="iconbtn" onclick="navigate('settings')" aria-label="Ustawienia">⚙️</button>
-    <button class="iconbtn coins" id="headerCoins" onclick="navigate('shop')">🪙 0</button>
-  </div>
+  <div class="logo"><span>⚡</span> QUIZ LIFE RPG</div>
+  <button onclick="navigate('shop')" id="headerCoins">🪙 0</button>
 </header>
 
 <div class="layout">
 <aside class="sidebar">
-  <button class="nav active" data-page="home" onclick="navigate('home')"><span>🏠</span>Start</button>
-  <button class="nav" data-page="quiz" onclick="startQuiz()"><span>🧠</span>Quiz</button>
-  <button class="nav" data-page="world" onclick="navigate('world')"><span>🌍</span>World</button>
-  <button class="nav" data-page="shop" onclick="navigate('shop')"><span>🛍️</span>Sklep</button>
-  <button class="nav" data-page="inventory" onclick="navigate('inventory')"><span>🎒</span>Ekwipunek</button>
-  <button class="nav" data-page="settings" onclick="navigate('settings')"><span>⚙️</span>Ustawienia</button>
-  <div class="sidehint">✨ Odpowiadaj na pytania, zdobywaj coinsy i twórz własny świat!</div>
+  <button class="nav active" data-page="home" onclick="navigate('home')">🏠 Start</button>
+  <button class="nav" data-page="quiz" onclick="startQuiz()">🧠 Quiz</button>
+  <button class="nav" data-page="world" onclick="navigate('world')">🌍 WORLD</button>
+  <button class="nav" data-page="shop" onclick="navigate('shop')">🛍️ Sklep</button>
+  <button class="nav" data-page="inventory" onclick="navigate('inventory')">🎒 Ekwipunek</button>
+  <button class="nav" data-page="settings" onclick="navigate('settings')">⚙️ Ustawienia</button>
 </aside>
 
 <main class="main">
 <section id="page-home">
   <div class="hero">
-    <div class="eyebrow">TWOJA PRZYGODA ZACZYNA SIĘ TERAZ</div>
+    <p class="muted">TWOJA PRZYGODA ZACZYNA SIĘ TERAZ</p>
     <h1>Zostań legendą gamingu.</h1>
-    <p class="muted">Odpowiadaj na pytania, zdobywaj coinsy, zbieraj skiny i emotki oraz buduj własny świat.</p>
+    <p class="muted">Odpowiadaj na pytania, zdobywaj coinsy, odblokowuj skiny i buduj własny świat!</p>
     <button class="btn" onclick="startQuiz()">▶ ZAGRAJ TERAZ</button>
   </div>
+
   <div class="stats">
-    <div class="stat"><span class="stat-icon">🪙</span><div class="stat-label">Coinsy</div><div class="stat-value" id="money">0</div></div>
-    <div class="stat"><span class="stat-icon">⭐</span><div class="stat-label">Poziom</div><div class="stat-value" id="level">1</div></div>
-    <div class="stat"><span class="stat-icon">🔥</span><div class="stat-label">Seria</div><div class="stat-value" id="streak">0</div></div>
+    <div class="stat">🪙 Coinsy<strong id="money">0</strong></div>
+    <div class="stat">⭐ Poziom<strong id="level">1</strong></div>
+    <div class="stat">🔥 Seria<strong id="streak">0</strong></div>
   </div>
+
   <div class="panel">
-    <div class="section-head"><h2>Postęp konta</h2><span class="badge" id="xpLabel">0 / 100 XP</span></div>
+    <div class="row"><h2>Postęp konta</h2><span id="xpLabel">0 / 100 XP</span></div>
     <div class="progress"><div id="xpBar"></div></div>
-    <p class="muted" id="xpHint">Zdobywaj XP, żeby awansować.</p>
+    <p class="muted">Odpowiadaj poprawnie, aby zdobywać XP i awansować.</p>
   </div>
+
   <div class="panel">
     <h2>👤 Twój profil</h2>
-    <div class="profile"><div class="avatar" id="avatar">🙂</div><div><h3 id="profileName">Gracz</h3><div class="muted" id="profileStatus">Zwykły profil</div><span class="badge" id="profileLevel">POZIOM 1</span></div></div>
-    <button class="btn" onclick="navigate('inventory')">Zmień skin / profil</button>
+    <div class="profile">
+      <div class="avatar" id="avatar">🙂</div>
+      <div style="flex:1">
+        <strong id="profileName">Gracz</strong>
+        <p class="muted" id="profileStatus">Zwykły profil</p>
+        <span id="profileLevel">POZIOM 1</span>
+      </div>
+    </div>
+    <button onclick="navigate('inventory')">Zmień wygląd</button>
   </div>
-  <div class="panel"><div class="section-head"><h2>🕺 Emotki</h2><button class="secondary" onclick="navigate('shop')">Zdobądź więcej</button></div><div class="emoterow" id="homeEmotes"></div></div>
-  <div class="panel"><h2>🌍 Twój świat</h2><p class="muted" id="homeWorldSummary">Jeszcze nic nie zbudowano.</p><button class="btn" onclick="navigate('world')">Wejdź do WORLD →</button></div>
+
+  <div class="panel">
+    <h2>🌍 Twój świat</h2>
+    <p class="muted" id="homeWorldSummary">Jeszcze nic nie zbudowano.</p>
+    <button onclick="navigate('world')">Otwórz WORLD →</button>
+  </div>
 </section>
 
 <section id="page-quiz" class="hidden">
-  <div class="panel"><div class="section-head"><h2>🧠 Gaming Quiz</h2><span class="badge" id="quizBadge">RUN #1</span></div><div id="quizContent"></div></div>
+  <div class="panel">
+    <div class="row"><h2>🧠 Gaming Quiz</h2><span id="quizCount"></span></div>
+    <div id="quizContent"></div>
+  </div>
 </section>
 
 <section id="page-world" class="hidden">
   <div class="panel">
-    <div class="section-head"><div><h2>🌍 WORLD</h2><p class="muted">Kup obiekty za coinsy, a potem stawiaj je na swojej działce. Dotknij obiektu na działce, aby go usunąć.</p></div><span class="badge" id="worldBalance">🪙 0</span></div>
-    <div class="profile"><div style="font-size:38px">🏡</div><div><h3>Twoja działka</h3><p class="muted" style="margin:4px 0">Wybierz przedmiot poniżej, a następnie wolne pole.</p></div></div>
+    <h2>🌍 WORLD — Twoja działka</h2>
+    <p class="muted">Kup obiekty za coinsy, wybierz obiekt i kliknij wolne pole. Kliknij postawiony obiekt, aby go usunąć.</p>
+    <p id="worldBalance" class="price">🪙 0</p>
     <div class="worldgrid" id="worldGrid"></div>
-    <div class="section-head"><h2>🧱 Buduj</h2><span class="badge" id="buildCount">0 obiektów</span></div>
+    <div class="row"><h2>🧱 Buduj</h2><span id="buildCount">0 obiektów</span></div>
     <div class="shopgrid" id="worldShop"></div>
   </div>
 </section>
 
 <section id="page-shop" class="hidden">
   <div class="panel">
-    <div class="section-head"><h2>🛍️ Sklep</h2><span class="badge" id="shopBalance">🪙 0</span></div>
-    <p class="muted">Kupuj przedmioty za coinsy zdobywane w quizie. Każdy zakup jest zapisywany.</p>
-    <div class="section-head"><h2>👕 Skiny</h2></div><div class="shopgrid" id="skinShop"></div>
-    <div class="section-head" style="margin-top:22px"><h2>✨ Profile</h2></div><div class="shopgrid" id="profileShop"></div>
-    <div class="section-head" style="margin-top:22px"><h2>🕺 Emotki</h2></div><div class="shopgrid" id="emoteShop"></div>
-    <div class="section-head" style="margin-top:22px"><h2>🏡 Przedmioty do WORLD</h2></div><div class="shopgrid" id="objectShop"></div>
+    <h2>🛍️ Sklep</h2>
+    <p id="shopBalance" class="price">🪙 0</p>
+    <h2>👕 Skiny</h2><div class="shopgrid" id="skinShop"></div>
+    <h2>✨ Profile</h2><div class="shopgrid" id="profileShop"></div>
+    <h2>🕺 Emotki</h2><div class="shopgrid" id="emoteShop"></div>
+    <h2>🏡 Przedmioty do WORLD</h2><div class="shopgrid" id="objectShop"></div>
   </div>
 </section>
 
 <section id="page-inventory" class="hidden">
   <div class="panel">
     <h2>🎒 Ekwipunek</h2>
-    <p class="muted">Zakładaj posiadane skiny i profile. Twoje wybory zostaną zapisane.</p>
-    <div class="section-head"><h2>👕 Twoje skiny</h2></div><div class="shopgrid" id="inventorySkins"></div>
-    <div class="section-head" style="margin-top:22px"><h2>✨ Profile</h2></div><div class="shopgrid" id="inventoryProfiles"></div>
-    <div class="section-head" style="margin-top:22px"><h2>🕺 Twoje emotki</h2></div><div class="emoterow" id="inventoryEmotes"></div>
+    <h2>👕 Skiny</h2><div class="shopgrid" id="inventorySkins"></div>
+    <h2>✨ Profile</h2><div class="shopgrid" id="inventoryProfiles"></div>
+    <h2>🕺 Emotki</h2><div class="shopgrid" id="inventoryEmotes"></div>
+    <h2>🏡 Niepostawione obiekty</h2><div class="shopgrid" id="inventoryObjects"></div>
   </div>
 </section>
 
 <section id="page-settings" class="hidden">
   <div class="panel">
     <h2>⚙️ Ustawienia</h2>
-    <div class="settingsrow"><div><b>Język</b><p>Wybierz język interfejsu.</p></div><select id="language" onchange="setLanguage(this.value)"><option value="pl">Polski</option><option value="en">English</option></select></div>
-    <div class="settingsrow"><div><b>Dźwięk</b><p>Dźwięki przy odpowiedziach.</p></div><button class="secondary" id="soundButton" onclick="toggleSound()">🔊 Włączony</button></div>
-    <div class="settingsrow"><div><b>Motyw</b><p>Ciemny, jasny lub własny kolor.</p></div><select id="theme" onchange="setTheme(this.value)"><option value="dark">Ciemny</option><option value="light">Jasny</option><option value="custom">Własny kolor</option></select></div>
-    <div class="settingsrow" id="colorRow"><div><b>Kolor akcentu</b><p>Ustaw własny kolor przycisków.</p></div><input id="accentColor" type="color" value="#9568ff" onchange="setAccent(this.value)"></div>
-    <div class="settingsrow"><div><b>Reset postępu</b><p>Usunie zapisane coinsy, poziom i przedmioty.</p></div><button class="secondary" onclick="resetGame()">Reset</button></div>
+    <p>Motyw strony</p>
+    <select id="theme" onchange="setTheme(this.value)">
+      <option value="dark">Ciemny</option>
+      <option value="light">Jasny</option>
+    </select>
+    <p>Kolor przycisków</p>
+    <input type="color" id="accentColor" value="#9568ff" onchange="setAccent(this.value)">
+    <hr>
+    <h2>💾 Postęp</h2>
+    <p class="muted">Postęp zapisuje się w pamięci tej przeglądarki.</p>
+    <button onclick="resetGame()">Resetuj postęp</button>
   </div>
-  <div class="panel"><h2>💾 Zapis</h2><p class="muted">Postęp jest zapisywany w pamięci przeglądarki na tym urządzeniu. Usunięcie danych przeglądarki może skasować zapis. Ten zapis nie synchronizuje się między różnymi graczami.</p></div>
 </section>
 </main>
 </div>
@@ -297,90 +265,417 @@ const $ = id => document.getElementById(id);
 
 const catalog = {
   skins: [
-    {id:"skin_ninja",name:"Ninja",icon:"🥷",price:100,desc:"Tajemniczy wojownik."},
-    {id:"skin_robot",name:"Robot",icon:"🤖",price:150,desc:"Cybernetyczny wygląd."},
-    {id:"skin_alien",name:"Alien",icon:"👽",price:200,desc:"Kosmiczny przybysz."},
-    {id:"skin_knight",name:"Rycerz",icon:"🛡️",price:250,desc:"Gotowy do przygody."},
-    {id:"skin_dragon",name:"Smok",icon:"🐉",price:400,desc:"Legendarny skin."},
-    {id:"skin_ghost",name:"Duch",icon:"👻",price:300,desc:"Upiorny wygląd."}
+    {id:"ninja",name:"Ninja",icon:"🥷",price:100},
+    {id:"robot",name:"Robot",icon:"🤖",price:150},
+    {id:"alien",name:"Alien",icon:"👽",price:200},
+    {id:"knight",name:"Rycerz",icon:"🛡️",price:250},
+    {id:"dragon",name:"Smok",icon:"🐉",price:400},
+    {id:"ghost",name:"Duch",icon:"👻",price:300}
   ],
   profiles: [
-    {id:"profile_neon",name:"Neonowy profil",icon:"💜",price:250,desc:"Świecąca ramka profilu.",style:"neon"},
-    {id:"profile_fire",name:"Ognisty profil",icon:"🔥",price:350,desc:"Efekt ognistej poświaty.",style:"fire"},
-    {id:"profile_diamond",name:"Diamentowy profil",icon:"💎",price:500,desc:"Błękitna diamentowa poświata.",style:"diamond"}
+    {id:"neon",name:"Neonowy profil",icon:"💜",price:250},
+    {id:"fire",name:"Ognisty profil",icon:"🔥",price:350},
+    {id:"diamond",name:"Diamentowy profil",icon:"💎",price:500}
   ],
   emotes: [
-    {id:"emote_wave",name:"Przywitanie",icon:"👋",price:50,desc:"Pomachaj innym."},
-    {id:"emote_laugh",name:"Śmiech",icon:"😂",price:70,desc:"Pokaż, że jest zabawnie."},
-    {id:"emote_dance",name:"Taniec",icon:"💃",price:100,desc:"Czas na taniec!"},
-    {id:"emote_gg",name:"GG",icon:"🎮",price:80,desc:"Dobra gra!"},
-    {id:"emote_heart",name:"Serduszko",icon:"❤️",price:120,desc:"Wyślij pozytywną energię."},
-    {id:"emote_flex",name:"Flex",icon:"💪",price:150,desc:"Pochwal się wynikiem."}
+    {id:"wave",name:"Przywitanie",icon:"👋",price:50},
+    {id:"laugh",name:"Śmiech",icon:"😂",price:70},
+    {id:"dance",name:"Taniec",icon:"💃",price:100},
+    {id:"gg",name:"GG",icon:"🎮",price:80},
+    {id:"heart",name:"Serduszko",icon:"❤️",price:120},
+    {id:"flex",name:"Flex",icon:"💪",price:150}
   ],
   objects: [
-    {id:"obj_house",name:"Mały dom",icon:"🏠",price:150,desc:"Twój pierwszy dom."},
-    {id:"obj_tree",name:"Drzewo",icon:"🌳",price:40,desc:"Dodaj trochę zieleni."},
-    {id:"obj_statue",name:"Złoty posąg",icon:"🗿",price:250,desc:"Ozdoba dla legendy."},
-    {id:"obj_gaming",name:"Gaming PC",icon:"🖥️",price:200,desc:"Stanowisko gracza."},
-    {id:"obj_castle",name:"Zamek",icon:"🏰",price:600,desc:"Wielka budowla."},
-    {id:"obj_fountain",name:"Fontanna",icon:"⛲",price:180,desc:"Elegancka dekoracja."},
-    {id:"obj_trophy",name:"Trofeum",icon:"🏆",price:120,desc:"Pokaż swoje osiągnięcia."},
-    {id:"obj_rocket",name:"Rakieta",icon:"🚀",price:350,desc:"Podbij kosmos."},
-    {id:"obj_tent",name:"Namiot",icon:"⛺",price:90,desc:"Mały obóz."},
-    {id:"obj_dragon",name:"Smoczy posąg",icon:"🐉",price:450,desc:"Fantastyczna dekoracja."},
-    {id:"obj_arcade",name:"Automat arcade",icon:"🕹️",price:220,desc:"Klasyczny automat do gier."},
-    {id:"obj_crown",name:"Korona",icon:"👑",price:300,desc:"Ozdoba króla działki."}
+    {id:"house",name:"Mały dom",icon:"🏠",price:150},
+    {id:"tree",name:"Drzewo",icon:"🌳",price:40},
+    {id:"statue",name:"Złoty posąg",icon:"🗿",price:250},
+    {id:"pc",name:"Gaming PC",icon:"🖥️",price:200},
+    {id:"castle",name:"Zamek",icon:"🏰",price:600},
+    {id:"fountain",name:"Fontanna",icon:"⛲",price:180},
+    {id:"trophy",name:"Trofeum",icon:"🏆",price:120},
+    {id:"rocket",name:"Rakieta",icon:"🚀",price:350},
+    {id:"tent",name:"Namiot",icon:"⛺",price:90},
+    {id:"dragonstatue",name:"Smoczy posąg",icon:"🐉",price:450},
+    {id:"arcade",name:"Automat arcade",icon:"🕹️",price:220},
+    {id:"crown",name:"Korona",icon:"👑",price:300}
   ]
 };
 
 const questions = [
-  {q:"Która firma stworzyła Minecrafta?",a:["Mojang","Nintendo","Valve","Ubisoft"],c:0,cat:"Gry"},
-  {q:"Jak nazywa się bohater serii The Legend of Zelda?",a:["Zelda","Link","Mario","Kirby"],c:1,cat:"Gry"},
-  {q:"W jakiej grze buduje się z klocków i walczy z Creeperami?",a:["Terraria","Minecraft","Roblox","Fall Guys"],c:1,cat:"Gry"},
-  {q:"Jak nazywa się wyspa startowa w Fortnite?",a:["Mapa","Wyspa","Lobby","Battle Island"],c:1,cat:"Gry"},
-  {q:"Która postać jest maskotką Nintendo?",a:["Sonic","Crash","Mario","Lara Croft"],c:2,cat:"Gry"},
-  {q:"W której grze naprawia się generatory i ucieka przed zabójcą?",a:["Dead by Daylight","Rocket League","FIFA","Stardew Valley"],c:0,cat:"Gry"},
-  {q:"Jak nazywa się główny bohater God of War (nowsze części)?",a:["Kratos","Atreus","Thor","Baldur"],c:0,cat:"Gry"},
-  {q:"Która gra polega na budowaniu własnych doświadczeń i światów?",a:["Roblox","The Sims 4","Overwatch","Valorant"],c:0,cat:"Gry"},
-  {q:"Jak nazywa się waluta V-Bucks?",a:["Waluta Fortnite","Waluta Minecrafta","Waluta Roblox","Waluta GTA"],c:0,cat:"Gry"},
-  {q:"Który z tych tytułów jest grą wyścigową?",a:["Forza Horizon","The Sims","Among Us","Hades"],c:0,cat:"Gry"},
-  {q:"Jaki kolor ma zwykle pasek życia w wielu grach?",a:["Zielony","Różowy","Fioletowy","Biały"],c:0,cat:"Gaming"},
-  {q:"Co oznacza skrót NPC?",a:["Non-Player Character","New Player Card","Next Play Combo","No Pause Control"],c:0,cat:"Gaming"},
-  {q:"Co zazwyczaj oznacza XP w grach?",a:["Punkty doświadczenia","Punkty zdrowia","Walutę premium","Czas gry"],c:0,cat:"Gaming"},
-  {q:"Co zwykle oznacza GG po meczu?",a:["Good Game","Go Gaming","Great Gear","Game Gone"],c:0,cat:"Gaming"},
-  {q:"Co robi przycisk pauzy?",a:["Zatrzymuje lub wstrzymuje grę","Kasuje grę","Kupuje skina","Zmienia język zawsze"],c:0,cat:"Gaming"},
-  {q:"Która planeta jest nazywana Czerwoną Planetą?",a:["Mars","Wenus","Jowisz","Saturn"],c:0,cat:"Nauka"},
-  {q:"Ile boków ma sześciokąt?",a:["5","6","7","8"],c:1,cat:"Nauka"},
-  {q:"Jaki gaz pobierają ludzie podczas oddychania?",a:["Tlen","Hel","Metan","Wodór"],c:0,cat:"Nauka"},
-  {q:"Ile minut ma godzina?",a:["30","60","90","100"],c:1,cat:"Nauka"},
-  {q:"Który ocean jest największy?",a:["Spokojny","Atlantycki","Indyjski","Arktyczny"],c:0,cat:"Geografia"},
-  {q:"Jaka jest stolica Polski?",a:["Kraków","Gdańsk","Warszawa","Poznań"],c:2,cat:"Geografia"},
-  {q:"Na którym kontynencie leży Egipt?",a:["Afryka","Europa","Australia","Ameryka Południowa"],c:0,cat:"Geografia"},
-  {q:"Ile dni ma zwykły rok?",a:["360","365","366","364"],c:1,cat:"Wiedza"},
-  {q:"Które zwierzę jest największym ssakiem?",a:["Słoń afrykański","Płetwal błękitny","Żyrafa","Nosorożec"],c:1,cat:"Przyroda"},
-  {q:"Jak nazywa się proces, w którym rośliny wykorzystują światło?",a:["Fotosynteza","Parowanie","Fermentacja","Grawitacja"],c:0,cat:"Przyroda"},
-  {q:"Ile nóg ma pająk?",a:["6","8","10","12"],c:1,cat:"Przyroda"},
-  {q:"Który instrument ma klawisze?",a:["Fortepian","Skrzypce","Trąbka","Flet"],c:0,cat:"Muzyka"},
-  {q:"Jak nazywa się osoba reżyserująca film?",a:["Reżyser","Operator internetu","Sędzia","Pilot"],c:0,cat:"Film"},
-  {q:"Co jest potrzebne, aby przeglądać stronę internetową?",a:["Przeglądarka","Lodówka","Drukarka 3D","Mikrofon"],c:0,cat:"Technologia"},
-  {q:"Który z tych plików jest stroną HTML?",a:["index.html","photo.mp3","save.exe","music.wav"],c:0,cat:"Technologia"},
-  {q:"Co robi zapis gry?",a:["Pozwala wrócić do postępu","Zawsze usuwa konto","Zwiększa ping","Wyłącza ekran"],c:0,cat:"Gaming"},
-  {q:"Co oznacza tryb wieloosobowy?",a:["Gra z innymi graczami","Gra bez ekranu","Tylko samouczek","Tryb zdjęć"],c:0,cat:"Gaming"},
-  {q:"Która postać Marvela jest znana z tarczy?",a:["Kapitan Ameryka","Doctor Strange","Ant-Man","Rocket"],c:0,cat:"Komiksy"},
-  {q:"Jak nazywa się młody bohater znany jako Spider-Man w MCU?",a:["Peter Parker","Bruce Wayne","Clark Kent","Barry Allen"],c:0,cat:"Komiksy"},
-  {q:"Który bohater Marvela używa młota Mjolnir?",a:["Thor","Hawkeye","Loki","Vision"],c:0,cat:"Komiksy"},
-  {q:"Jaki jest żywioł wody?",a:["Woda","Ogień","Metal","Piasek"],c:0,cat:"Wiedza"},
-  {q:"Ile wynosi 9 × 7?",a:["56","63","72","79"],c:1,cat:"Matematyka"},
-  {q:"Ile wynosi 100 ÷ 4?",a:["20","25","40","50"],c:1,cat:"Matematyka"},
-  {q:"Która liczba jest parzysta?",a:["13","17","24","31"],c:2,cat:"Matematyka"},
-  {q:"Jak nazywa się urządzenie do poruszania kursorem na PC?",a:["Mysz","Router","Głośnik","Kamera"],c:0,cat:"Technologia"},
-  {q:"Co zwykle oznacza skrót CPU?",a:["Procesor","Karta dźwiękowa","Pamięć USB","Monitor"],c:0,cat:"Technologia"},
-  {q:"Która konsola jest produkowana przez Sony?",a:["PlayStation","Xbox","Switch","Steam Deck"],c:0,cat:"Technologia"},
-  {q:"Która firma produkuje serię Xbox?",a:["Microsoft","Sony","Nintendo","Sega"],c:0,cat:"Technologia"},
-  {q:"Co oznacza AFK w grach?",a:["Z dala od klawiatury","Atak finałowy","Nowa mapa","Tryb turniejowy"],c:0,cat:"Gaming"},
-  {q:"Co zwykle daje wyższy poziom w RPG?",a:["Postęp lub nowe możliwości","Zawsze koniec gry","Usunięcie zapisu","Wyłączenie dźwięku"],c:0,cat:"Gaming"},
-  {q:"Który ptak nie potrafi latać?",a:["Struś","Orzeł","Jaskółka","Gołąb"],c:0,cat:"Przyroda"},
-  {q:"Który metal jest ciekły w temperaturze pokojowej?",a:["Rtęć","Żelazo","Miedź","Złoto"],c:0,cat:"Nauka"},
-  {q:"Ile kolorów ma tradycyjna tęcza?",a:["5","6","7","8"],c:2,cat:"Nauka"},
-  {q:"Który język jest używany do stylowania stron WWW?",a:["CSS","MP3","PNG","PDF"],c:0,cat:"Technologia"},
-  {q:"Co robi JavaScript na stronie?",a:["Dodaje interakcje","Jest formatem obrazu","Jest kablem","Jest przeglądarką"],c:0,
+  {q:"Która firma stworzyła Minecrafta?",a:["Mojang","Nintendo","Valve","Ubisoft"],c:0},
+  {q:"Jak nazywa się bohater The Legend of Zelda?",a:["Zelda","Link","Mario","Kirby"],c:1},
+  {q:"W której grze naprawia się generatory i ucieka przed zabójcą?",a:["Dead by Daylight","FIFA","Terraria","Forza"],c:0},
+  {q:"Kto jest maskotką Nintendo?",a:["Sonic","Crash","Mario","Lara Croft"],c:2},
+  {q:"Co oznacza skrót NPC?",a:["Non-Player Character","New Player Card","Next Play Combo","No Pause Control"],c:0},
+  {q:"Co oznacza XP?",a:["Punkty doświadczenia","Punkty zdrowia","Waluta","Czas gry"],c:0},
+  {q:"Jaka jest stolica Polski?",a:["Kraków","Gdańsk","Warszawa","Poznań"],c:2},
+  {q:"Która planeta jest Czerwoną Planetą?",a:["Mars","Wenus","Jowisz","Saturn"],c:0},
+  {q:"Ile minut ma godzina?",a:["30","60","90","100"],c:1},
+  {q:"Która konsola jest produkowana przez Sony?",a:["PlayStation","Xbox","Switch","Steam Deck"],c:0},
+  {q:"Który bohater Marvela używa Mjolnira?",a:["Thor","Hawkeye","Loki","Vision"],c:0},
+  {q:"Ile wynosi 9 × 7?",a:["56","63","72","79"],c:1},
+  {q:"Która gra jest grą wyścigową?",a:["Forza Horizon","The Sims","Among Us","Hades"],c:0},
+  {q:"Co oznacza GG?",a:["Good Game","Go Gaming","Great Gear","Game Gone"],c:0},
+  {q:"Który ptak nie potrafi latać?",a:["Struś","Orzeł","Jaskółka","Gołąb"],c:0},
+  {q:"Jak nazywa się główny bohater God of War?",a:["Kratos","Atreus","Thor","Baldur"],c:0},
+  {q:"Ile nóg ma pająk?",a:["6","8","10","12"],c:1},
+  {q:"Która postać Marvela jest znana z tarczy?",a:["Kapitan Ameryka","Doctor Strange","Ant-Man","Rocket"],c:0},
+  {q:"Co robi przycisk pauzy?",a:["Wstrzymuje grę","Kasuje grę","Kupuje skina","Zawsze zmienia język"],c:0},
+  {q:"Co oznacza AFK?",a:["Z dala od klawiatury","Atak finałowy","Nowa mapa","Tryb turniejowy"],c:0}
+];
+
+function defaultState() {
+  return {
+    coins:0,xp:0,level:1,streak:0,
+    owned:{skins:[],profiles:[],emotes:[],objects:[]},
+    equipped:{skin:null,profile:null},
+    world:Array(12).fill(null),
+    theme:"dark",accent:"#9568ff"
+  };
+}
+
+function loadState() {
+  try {
+    const saved=JSON.parse(localStorage.getItem("quizLifeRPG"));
+    if (!saved) return defaultState();
+    const base=defaultState();
+    return {
+      ...base,...saved,
+      owned:{...base.owned,...(saved.owned||{})},
+      equipped:{...base.equipped,...(saved.equipped||{})},
+      world:Array.from({length:12},(_,i)=>saved.world?.[i]||null)
+    };
+  } catch(e) { return defaultState(); }
+}
+
+let state=loadState();
+let round=[];
+let questionIndex=0;
+let selectedBuild=null;
+let answered=false;
+let noticeTimer=null;
+
+function save() {
+  try { localStorage.setItem("quizLifeRPG",JSON.stringify(state)); }
+  catch(e) { showNotice("Nie udało się zapisać danych przeglądarki."); }
+}
+
+function showNotice(message) {
+  const el=$("notice");
+  el.textContent=message;
+  el.classList.add("show");
+  clearTimeout(noticeTimer);
+  noticeTimer=setTimeout(()=>el.classList.remove("show"),2200);
+}
+
+function getItem(type,id) {
+  return catalog[type].find(item=>item.id===id);
+}
+
+function navigate(page) {
+  document.querySelectorAll("main section").forEach(section=>section.classList.add("hidden"));
+  $("page-"+page).classList.remove("hidden");
+  document.querySelectorAll(".nav").forEach(btn=>btn.classList.toggle("active",btn.dataset.page===page));
+  if(page==="home") renderHome();
+  if(page==="shop") renderShop();
+  if(page==="inventory") renderInventory();
+  if(page==="world") renderWorld();
+  if(page==="settings") {
+    $("theme").value=state.theme;
+    $("accentColor").value=state.accent;
+  }
+}
+
+function renderStats() {
+  $("money").textContent=state.coins;
+  $("level").textContent=state.level;
+  $("streak").textContent=state.streak;
+  $("headerCoins").textContent="🪙 "+state.coins;
+  $("shopBalance").textContent="🪙 "+state.coins;
+  $("worldBalance").textContent="🪙 "+state.coins;
+  $("xpLabel").textContent=state.xp+" / 100 XP";
+  $("xpBar").style.width=state.xp+"%";
+  $("profileLevel").textContent="POZIOM "+state.level;
+}
+
+function renderHome() {
+  renderStats();
+  const skin=getItem("skins",state.equipped.skin);
+  const profile=getItem("profiles",state.equipped.profile);
+  $("avatar").textContent=skin?skin.icon:"🙂";
+  $("profileName").textContent="Gracz";
+  $("profileStatus").textContent=profile?profile.name:"Zwykły profil";
+  const count=state.world.filter(Boolean).length;
+  $("homeWorldSummary").textContent=count
+    ? "Na twojej działce stoi obiektów: "+count+"."
+    : "Jeszcze nic nie zbudowano.";
+}
+
+function renderQuiz() {
+  const area=$("quizContent");
+  if(questionIndex>=round.length) {
+    area.innerHTML="<h2>🏆 Koniec rundy!</h2><p>Ukończyłeś 10 pytań.</p><button class='btn' onclick='startQuiz()'>Zagraj ponownie</button><button onclick=\"navigate('home')\">Powrót</button>";
+    $("quizCount").textContent="Ukończono";
+    return;
+  }
+  answered=false;
+  const q=round[questionIndex];
+  $("quizCount").textContent=(questionIndex+1)+" / "+round.length;
+  area.innerHTML="<p class='muted'>Pytanie "+(questionIndex+1)+" z "+round.length+"</p><h2>"+q.q+"</h2><div class='grid' id='answers'></div><div id='feedback'></div>";
+  q.a.forEach((answer,index)=>{
+    const button=document.createElement("button");
+    button.textContent=answer;
+    button.onclick=()=>answerQuestion(index,button);
+    $("answers").appendChild(button);
+  });
+}
+
+function startQuiz() {
+  round=[...questions].sort(()=>Math.random()-.5).slice(0,10);
+  questionIndex=0;
+  navigate("quiz");
+  renderQuiz();
+}
+
+function answerQuestion(index,button) {
+  if(answered) return;
+  answered=true;
+  const q=round[questionIndex];
+  document.querySelectorAll("#answers button").forEach((btn,i)=>{
+    btn.disabled=true;
+    if(i===q.c) btn.style.borderColor="#36d99a";
+  });
+
+  const correct=index===q.c;
+  if(correct) {
+    state.coins+=10;
+    state.xp+=20;
+    state.streak++;
+    while(state.xp>=100) {
+      state.xp-=100;
+      state.level++;
+      state.coins+=50;
+      showNotice("Poziom w górę! +50 coinsów");
+    }
+  } else {
+    state.streak=0;
+  }
+
+  save();
+  renderStats();
+  const feedback=$("feedback");
+  feedback.className="panel";
+  feedback.innerHTML=correct
+    ? "<strong>✅ Dobra odpowiedź! +10 coinsów, +20 XP</strong>"
+    : "<strong>❌ Zła odpowiedź.</strong><p>Poprawna odpowiedź: "+q.a[q.c]+"</p>";
+
+  const next=document.createElement("button");
+  next.className="btn";
+  next.textContent=questionIndex===round.length-1?"Zobacz wynik":"Następne pytanie →";
+  next.onclick=()=>{ questionIndex++; renderQuiz(); };
+  feedback.appendChild(next);
+}
+
+function itemCard(type,item,actionLabel,action) {
+  const card=document.createElement("div");
+  card.className="item";
+  const icon=document.createElement("div");
+  icon.className="itemicon";
+  icon.textContent=item.icon;
+  const title=document.createElement("strong");
+  title.textContent=item.name;
+  const price=document.createElement("p");
+  price.className="price";
+  price.textContent=item.price+" coinsów";
+  const button=document.createElement("button");
+  button.textContent=actionLabel;
+  button.onclick=action;
+  card.append(icon,title,price,button);
+  return card;
+}
+
+function buyItem(type,item) {
+  if(state.owned[type].includes(item.id)) {
+    showNotice("Już posiadasz ten przedmiot!");
+    return;
+  }
+  if(state.coins<item.price) {
+    showNotice("Za mało coinsów! Zagraj w quiz.");
+    return;
+  }
+  state.coins-=item.price;
+  state.owned[type].push(item.id);
+  save();
+  renderStats();
+  renderShop();
+  renderWorld();
+  showNotice("Kupiono: "+item.name+"!");
+}
+
+function renderShop() {
+  renderStats();
+  for(const type of ["skins","profiles","emotes","objects"]) {
+    const target=type==="skins"?"skinShop":
+      type==="profiles"?"profileShop":
+      type==="emotes"?"emoteShop":"objectShop";
+    $(target).replaceChildren();
+    catalog[type].forEach(item=>{
+      const owned=state.owned[type].includes(item.id);
+      $(target).appendChild(itemCard(type,item,owned?"Posiadasz":"Kup",()=>buyItem(type,item)));
+    });
+  }
+}
+
+function renderInventory() {
+  renderStats();
+  const targets={
+    skins:"inventorySkins",profiles:"inventoryProfiles",
+    emotes:"inventoryEmotes",objects:"inventoryObjects"
+  };
+  for(const type of Object.keys(targets)) {
+    const target=$(targets[type]);
+    target.replaceChildren();
+    state.owned[type].forEach(id=>{
+      const item=getItem(type,id);
+      if(!item) return;
+      let label="Użyj";
+      let action=()=>{};
+      if(type==="skins") {
+        label=state.equipped.skin===id?"Założono":"Załóż";
+        action=()=>{
+          state.equipped.skin=id; save(); renderInventory(); renderHome();
+          showNotice("Założono skin: "+item.name);
+        };
+      } else if(type==="profiles") {
+        label=state.equipped.profile===id?"Założono":"Załóż";
+        action=()=>{
+          state.equipped.profile=id; save(); renderInventory(); renderHome();
+          showNotice("Założono profil: "+item.name);
+        };
+      } else if(type==="emotes") {
+        action=()=>showNotice(item.icon+" "+item.name+"!");
+      } else if(type==="objects") {
+        label="Wybierz do WORLD";
+        action=()=>{
+          selectedBuild=id; navigate("world");
+          showNotice("Kliknij wolne pole na działce.");
+        };
+      }
+      target.appendChild(itemCard(type,item,label,action));
+    });
+    if(!target.children.length) {
+      const p=document.createElement("p");
+      p.className="muted";
+      p.textContent="Brak przedmiotów. Sprawdź sklep!";
+      target.appendChild(p);
+    }
+  }
+}
+
+function renderWorld() {
+  renderStats();
+  const grid=$("worldGrid");
+  grid.replaceChildren();
+  state.world.forEach((id,index)=>{
+    const tile=document.createElement("button");
+    tile.className="worldtile"+(id?" filled":"");
+    if(id) {
+      const item=getItem("objects",id);
+      tile.textContent=item?item.icon:"❔";
+      const small=document.createElement("small");
+      small.textContent=item?item.name:"Obiekt";
+      tile.appendChild(small);
+      tile.onclick=()=>{
+        state.world[index]=null;
+        if(item&&!state.owned.objects.includes(id)) state.owned.objects.push(id);
+        save(); renderWorld(); renderHome();
+        showNotice("Obiekt wrócił do ekwipunku.");
+      };
+    } else {
+      tile.textContent=selectedBuild?"➕":"＋";
+      const small=document.createElement("small");
+      small.textContent="Wolne pole";
+      tile.appendChild(small);
+      tile.onclick=()=>{
+        if(!selectedBuild) {
+          showNotice("Najpierw wybierz obiekt w sekcji Buduj.");
+          return;
+        }
+        if(!state.owned.objects.includes(selectedBuild)) {
+          showNotice("Nie masz tego obiektu.");
+          selectedBuild=null;
+          return;
+        }
+        state.world[index]=selectedBuild;
+        state.owned.objects=state.owned.objects.filter(id=>id!==selectedBuild);
+        const item=getItem("objects",selectedBuild);
+        selectedBuild=null;
+        save(); renderWorld(); renderHome(); renderInventory();
+        showNotice("Postawiono: "+(item?item.name:"obiekt"));
+      };
+    }
+    grid.appendChild(tile);
+  });
+
+  $("buildCount").textContent=state.world.filter(Boolean).length+" obiektów";
+  const shop=$("worldShop");
+  shop.replaceChildren();
+  catalog.objects.forEach(item=>{
+    const owned=state.owned.objects.includes(item.id);
+    shop.appendChild(itemCard("objects",item,
+      owned?(selectedBuild===item.id?"Wybrano ✓":"Wybierz"):("Kup · "+item.price),
+      ()=>{
+        if(owned) {
+          selectedBuild=item.id;
+          showNotice("Wybrano "+item.name+". Kliknij wolne pole.");
+          renderWorld();
+        } else {
+          buyItem("objects",item);
+        }
+      }
+    ));
+  });
+}
+
+function setTheme(theme) {
+  state.theme=theme;
+  document.body.classList.toggle("light",theme==="light");
+  save();
+  showNotice("Zmieniono motyw.");
+}
+
+function setAccent(color) {
+  state.accent=color;
+  document.documentElement.style.setProperty("--accent",color);
+  save();
+  showNotice("Zmieniono kolor!");
+}
+
+function resetGame() {
+  if(!confirm("Na pewno usunąć cały postęp?")) return;
+  state=defaultState();
+  selectedBuild=null;
+  save();
+  document.body.classList.remove("light");
+  document.documentElement.style.setProperty("--accent",state.accent);
+  navigate("home");
+  renderShop();
+  renderInventory();
+  renderWorld();
+  showNotice("Postęp został zresetowany.");
+}
+
+function init() {
+  document.body.classList.toggle("light",state.theme==="light");
+  document.documentElement.style.setProperty("--accent",state.accent);
+  renderStats();
+  renderHome();
+  renderShop();
+  renderInventory();
+  renderWorld();
+}
+
+init();
+</script>
+</body>
+</html>
