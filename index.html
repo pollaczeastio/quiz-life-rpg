@@ -2,321 +2,394 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#100d1c">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10101c">
 <title>QUIZ LIFE RPG</title>
 <style>
+:root{--bg:#0b0b13;--panel:#141421;--panel2:#202033;--text:#f6f5ff;--muted:#9999b5;--accent:#9b6dff;--accent2:#5ee7ff;--border:#ffffff12}
 *{box-sizing:border-box}
-body{margin:0;background:#100d1c;color:#f5f0ff;font-family:system-ui,sans-serif}
-header{text-align:center;padding:25px 12px;background:linear-gradient(135deg,#49277d,#171127)}
-h1{margin:0;font-size:28px;letter-spacing:1px}
-h1 span{color:#ffd166}
-header p{color:#d0c3e7;font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}
-.stat,.panel{background:#211a35;border:1px solid #43335b;border-radius:15px;padding:14px}
-.stat small{display:block;color:#b8adcc;font-size:11px}
-.stat strong{font-size:18px}
-nav{display:flex;gap:6px;padding:0 12px 12px;overflow-x:auto}
-button{font:inherit;cursor:pointer}
-nav button{flex:1;min-width:68px;padding:11px 5px;background:#2b2240;color:white;border:1px solid #49365f;border-radius:10px}
-nav button.active,.primary{background:#a780ff;color:#170e29;font-weight:800}
-main{max-width:650px;margin:auto;padding:0 12px 30px}
-.panel{margin-bottom:12px;padding:17px}
-h2{font-size:21px;margin:5px 0 10px}
-.muted{color:#b9adcf;font-size:14px}
-.tag{font-size:12px;color:#ffd166;font-weight:bold}
-button.primary,.answer{display:block;width:100%;padding:14px;margin-top:9px;border-radius:11px}
-.primary{border:0}
-.answer{background:#2c2341;color:white;border:1px solid #514068;text-align:left}
-.answer:disabled{opacity:.7}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;transition:.25s}
+button,input,select{font:inherit}
+button{cursor:pointer;transition:transform .15s,filter .15s}
+button:hover{filter:brightness(1.12)}
+button:active{transform:scale(.98)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}
+.app{max-width:1180px;margin:auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:1px}
+.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(135deg,var(--accent),#5142c8);font-size:25px;box-shadow:0 8px 30px #0004}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:3px;margin-top:4px}
+.header-actions{display:flex;gap:8px}
+.icon-btn,.secondary{background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:13px;padding:11px 14px}
+.coins{font-weight:850;color:#ffd66b}
+.layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:20px}
+.sidebar,.panel,.stat,.hero{background:var(--panel);border:1px solid var(--border);border-radius:22px}
+.sidebar{padding:12px;height:max-content;position:sticky;top:16px}
+.nav{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:0;background:transparent;color:var(--muted);border-radius:13px;text-align:left;margin:3px 0;font-weight:750}
+.nav span{font-size:19px;width:24px}
+.nav.active,.nav:hover{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--text)}
+.side-note{padding:15px;margin-top:14px;background:var(--panel2);border-radius:16px}
+.side-note p{font-size:12px;color:var(--muted);line-height:1.6}
+.main{min-width:0}
+.hero{padding:26px;position:relative;overflow:hidden;background:linear-gradient(115deg,color-mix(in srgb,var(--accent) 23%,var(--panel)),var(--panel) 70%)}
+.hero:after{content:"⚡";position:absolute;right:28px;top:25px;font-size:85px;opacity:.13;transform:rotate(12deg)}
+.eyebrow{color:var(--accent2);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(27px,5vw,43px);margin:10px 0;letter-spacing:-1.5px}
+h2{font-size:21px;margin:0 0 15px}
+h3{font-size:16px;margin:0 0 8px}
+p{line-height:1.6}
+.muted{color:var(--muted)}
+.hero p{max-width:520px;color:var(--muted);margin:0 0 20px}
+.btn{background:linear-gradient(110deg,var(--accent),color-mix(in srgb,var(--accent) 65%,#443ce0));color:white;border:0;padding:13px 18px;border-radius:13px;font-weight:850;box-shadow:0 8px 25px color-mix(in srgb,var(--accent) 20%,transparent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.stat{padding:17px}
+.stat-label{font-size:12px;color:var(--muted);margin-bottom:9px}
+.stat-value{font-size:25px;font-weight:900}
+.stat-icon{float:right;font-size:21px}
+.progress{height:8px;border-radius:20px;background:var(--panel2);overflow:hidden;margin-top:12px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:20px;transition:width .3s}
+.panel{padding:22px;margin-bottom:16px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.badge{display:inline-block;padding:6px 10px;background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent2);border-radius:9px;font-size:11px;font-weight:850}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.answer{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;color:var(--text);font-weight:700;min-height:55px}
+.answer:hover{border-color:var(--accent)}
+.answer.correct{border-color:#47dba0;background:#164232}
+.answer.wrong{border-color:#ff687d;background:#451d2a}
+.question{font-size:clamp(18px,3vw,25px);font-weight:850;line-height:1.4;margin:18px 0}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px}
+.feedback{margin-top:15px;padding:14px;border-radius:13px;background:var(--panel2);line-height:1.5}
+.shop-item{background:var(--panel2);border:1px solid var(--border);border-radius:17px;padding:17px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.item-icon{font-size:32px}
+.item-price{font-weight:850;color:#ffd66b}
+.shop-item .btn{margin-top:auto}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border-bottom:0}
+.settings-row p{margin:5px 0 0;font-size:12px;color:var(--muted)}
+select,input[type=color]{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px;max-width:55%}
+input[type=color]{width:55px;height:42px;padding:3px}
+.switch{width:48px;height:27px;position:relative;display:inline-block;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#555;border-radius:30px;cursor:pointer}
+.slider:before{content:"";position:absolute;width:19px;height:19px;left:4px;top:4px;background:white;border-radius:50%;transition:.2s}
+.switch input:checked+.slider{background:var(--accent)}
+.switch input:checked+.slider:before{transform:translateX(21px)}
+.empty{text-align:center;padding:35px 10px;color:var(--muted)}
+.notice{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:13px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:90%;text-align:center;box-shadow:0 8px 35px #0005}
+.notice.show{opacity:1;transform:translate(-50%,0)}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:22px}
 .hidden{display:none!important}
-.notice{background:#302546;padding:12px;border-radius:10px;margin-top:12px}
-.progress{height:8px;background:#413454;border-radius:8px;overflow:hidden;margin:12px 0}
-.progress div{height:100%;background:#a780ff;width:0}
-.item{padding:13px 0;border-bottom:1px solid #443653}
-.item:last-child{border:0}
-footer{text-align:center;color:#9589ae;padding:18px;font-size:12px}
+@media(max-width:720px){
+.app{padding:13px}
+.layout{grid-template-columns:1fr}
+.sidebar{position:static;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:7px}
+.nav{padding:10px 2px;display:flex;flex-direction:column;gap:5px;justify-content:center;text-align:center;font-size:10px;margin:0}
+.nav span{width:auto;font-size:18px}
+.side-note{display:none}
+.hero{padding:22px}
+.hero:after{right:8px;top:8px;font-size:60px}
+.stats{gap:8px}
+.stat{padding:12px}
+.stat-value{font-size:20px}
+.stat-label{font-size:10px}
+.panel{padding:17px}
+.grid{gap:9px}
+.answer{padding:13px;font-size:13px}
+}
+@media(max-width:390px){.brand{font-size:13px}.logo{width:40px;height:40px}.header-actions .icon-btn{padding:9px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat-value{font-size:18px}}
 </style>
 </head>
 <body>
+<div class="app">
 <header>
-<h1>QUIZ LIFE <span>RPG</span></h1>
-<p>Twoje życie. Twoje wybory. Twoja legenda.</p>
+  <div class="brand"><div class="logo">⚡</div><div>QUIZ LIFE RPG<small>YOUR GAMING JOURNEY</small></div></div>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="navigate('settings')" aria-label="Settings">⚙️</button>
+    <button class="icon-btn coins" onclick="navigate('shop')" id="headerCoins">🪙 0</button>
+  </div>
 </header>
 
-<div class="stats">
-<div class="stat"><small>💰 GOTÓWKA</small><strong id="money">1025 $</strong></div>
-<div class="stat"><small>⭐ POZIOM</small><strong id="level">8</strong></div>
-<div class="stat"><small>🔥 SERIA</small><strong id="streak">0</strong></div>
-</div>
+<div class="layout">
+<aside class="sidebar">
+  <button class="nav active" data-page="home" onclick="navigate('home')"><span>🏠</span><b data-i="home">Start</b></button>
+  <button class="nav" data-page="quiz" onclick="navigate('quiz')"><span>🧠</span><b data-i="quiz">Quiz</b></button>
+  <button class="nav" data-page="shop" onclick="navigate('shop')"><span>🛍️</span><b data-i="shop">Sklep</b></button>
+  <button class="nav" data-page="inventory" onclick="navigate('inventory')"><span>🎒</span><b data-i="inventory">Ekwipunek</b></button>
+  <button class="nav" data-page="settings" onclick="navigate('settings')"><span>⚙️</span><b data-i="settings">Ustawienia</b></button>
+  <div class="side-note"><span class="badge">DAILY GRIND</span><p data-i="sideNote">Odpowiadaj poprawnie, zdobywaj XP i odblokowuj nowe przedmioty.</p></div>
+</aside>
 
-<nav>
-<button class="active" data-tab="home">🏠 Start</button>
-<button data-tab="quiz">🧠 Quiz</button>
-<button data-tab="shop">🛒 Sklep</button>
-<button data-tab="bag">🎒 Ekwipunek</button>
-</nav>
-
-<main>
-<section id="home" class="tab">
-<div class="panel">
-<div class="tag">TWOJA PRZYGODA</div>
-<h2>Witaj w QUIZ LIFE RPG!</h2>
-<p class="muted">Odpowiadaj na pytania o grach, zdobywaj dolary, kupuj przedmioty i rozwijaj swoją postać.</p>
-<div class="progress"><div id="xpbar"></div></div>
-<p class="muted" id="xptext">Postęp do następnego poziomu</p>
-<button class="primary" onclick="showTab('quiz')">▶ ROZPOCZNIJ QUIZ</button>
-</div>
-<div class="panel">
-<h2>📊 Statystyki</h2>
-<p>Rozwiązane pytania: <b id="total">0</b></p>
-<p>Poprawne odpowiedzi: <b id="correct">0</b></p>
-<p>Najlepsza seria: <b id="best">0</b></p>
-</div>
+<main class="main">
+<section id="page-home">
+  <div class="hero">
+    <div class="eyebrow" data-i="heroEyebrow">TWOJA PRZYGODA ZACZYNA SIĘ TERAZ</div>
+    <h1 data-i="heroTitle">Zostań legendą gamingu.</h1>
+    <p data-i="heroText">Sprawdź swoją wiedzę o grach, zdobywaj monety, ulepszaj konto i buduj swoją kolekcję.</p>
+    <button class="btn" onclick="startQuiz()" data-i="play">▶ ZAGRAJ TERAZ</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="stat-icon">🪙</span><div class="stat-label" data-i="money">Monety</div><div class="stat-value" id="money">0</div></div>
+    <div class="stat"><span class="stat-icon">⭐</span><div class="stat-label" data-i="level">Poziom</div><div class="stat-value" id="level">1</div></div>
+    <div class="stat"><span class="stat-icon">🔥</span><div class="stat-label" data-i="streak">Seria</div><div class="stat-value" id="streak">0</div></div>
+  </div>
+  <div class="panel">
+    <div class="section-head"><h2 data-i="progress">Postęp konta</h2><span class="badge" id="xpLabel">0 / 100 XP</span></div>
+    <div class="progress"><div id="xpBar"></div></div>
+    <p class="muted" id="xpHint" data-i="xpHint">Zdobywaj doświadczenie, żeby awansować na kolejny poziom.</p>
+  </div>
+  <div class="panel">
+    <div class="section-head"><h2 data-i="featured">🎯 Gotowy na wyzwanie?</h2><span class="badge">QUIZ</span></div>
+    <p class="muted" data-i="featuredText">Każda poprawna odpowiedź daje monety i doświadczenie. Im dłuższa seria, tym większa nagroda!</p>
+    <button class="btn" onclick="startQuiz()" data-i="startChallenge">Rozpocznij wyzwanie →</button>
+  </div>
 </section>
 
-<section id="quiz" class="tab hidden">
-<div class="panel">
-<div class="tag" id="qtag">POZIOM 8</div>
-<h2 id="question">Gotowy na wyzwanie?</h2>
-<div id="answers"></div>
-<div id="feedback" class="notice hidden"></div>
-<button id="next" class="primary hidden" onclick="nextQuestion()">NASTĘPNE PYTANIE →</button>
-</div>
+<section id="page-quiz" class="hidden">
+  <div class="panel">
+    <div class="section-head"><h2 data-i="quizTitle">🧠 Gaming Quiz</h2><span class="badge" id="quizBadge">RUN #1</span></div>
+    <div id="quizContent"></div>
+  </div>
 </section>
 
-<section id="shop" class="tab hidden">
-<div class="panel">
-<h2>🛒 Sklep RPG</h2>
-<p class="muted">Wydawaj zarobione dolary na ulepszenia i przedmioty.</p>
-<div id="shopitems"></div>
-</div>
+<section id="page-shop" class="hidden">
+  <div class="panel">
+    <div class="section-head"><div><h2 data-i="shopTitle">🛍️ Sklep</h2><p class="muted" data-i="shopDesc">Wydawaj monety na swoją kolekcję.</p></div><span class="badge" id="shopBalance">🪙 0</span></div>
+    <div class="grid" id="shopGrid"></div>
+  </div>
 </section>
 
-<section id="bag" class="tab hidden">
-<div class="panel">
-<h2>🎒 Ekwipunek</h2>
-<div id="inventory"></div>
-</div>
-<div class="panel">
-<h2>⚙️ Ustawienia</h2>
-<button class="primary" onclick="resetGame()">ZRESETUJ POSTĘP</button>
-<p class="muted">Reset usuwa zapis gry z tej przeglądarki.</p>
-</div>
+<section id="page-inventory" class="hidden">
+  <div class="panel">
+    <div class="section-head"><h2 data-i="inventoryTitle">🎒 Twój ekwipunek</h2><span class="badge" id="itemCount">0 ITEMS</span></div>
+    <div class="grid" id="inventoryGrid"></div>
+  </div>
+</section>
+
+<section id="page-settings" class="hidden">
+  <div class="panel">
+    <h2 data-i="settingsTitle">⚙️ Ustawienia</h2>
+    <div class="settings-row"><div><b data-i="language">Język</b><p data-i="languageDesc">Wybierz język interfejsu.</p></div><select id="languageSelect" onchange="setLanguage(this.value)"><option value="pl">Polski</option><option value="en">English</option></select></div>
+    <div class="settings-row"><div><b data-i="sound">Dźwięki</b><p data-i="soundDesc">Efekty dźwiękowe w grze.</p></div><label class="switch"><input id="soundToggle" type="checkbox" checked onchange="setSound(this.checked)"><span class="slider"></span></label></div>
+    <div class="settings-row"><div><b data-i="theme">Motyw</b><p data-i="themeDesc">Wybierz wygląd gry.</p></div><select id="themeSelect" onchange="setTheme(this.value)"><option value="dark">Dark</option><option value="white">White</option><option value="custom">Custom</option></select></div>
+    <div class="settings-row" id="colorRow"><div><b data-i="customColor">Kolor motywu</b><p data-i="colorDesc">Wybierz swój własny kolor.</p></div><input type="color" id="colorPicker" value="#9b6dff" onchange="setCustomColor(this.value)"></div>
+    <div class="settings-row"><div><b data-i="reset">Reset gry</b><p data-i="resetDesc">Usuń zapisane postępy i zacznij od nowa.</p></div><button class="secondary" onclick="resetGame()" data-i="resetButton">Resetuj</button></div>
+  </div>
 </section>
 </main>
-<footer>QUIZ LIFE RPG • Wersja 1.0</footer>
+</div>
+<footer>QUIZ LIFE RPG · <span data-i="footer">Twój gamingowy progres zaczyna się tutaj.</span></footer>
+</div>
+<div class="notice" id="notice" role="status"></div>
 
 <script>
-const initial={
-money:1025,level:8,streak:0,best:0,correct:0,total:0,
-multiplier:2,bonus:true,
-items:[
-"Dead by Daylight",
-"Pakiet skinów superbohatera",
-"Emotka GG",
-"Emotka taneczna",
-"Pakiet DLC: nowe przygody"
-],
-bought:[]
-};
-
-let state;
-try{
-const saved=JSON.parse(localStorage.getItem("qlrpg_save"));
-state=saved?{...initial,...saved}: {...initial};
-}catch(e){state={...initial};}
-
+const translations={
+pl:{
+home:"Start",quiz:"Quiz",shop:"Sklep",inventory:"Ekwipunek",settings:"Ustawienia",
+sideNote:"Odpowiadaj poprawnie, zdobywaj XP i odblokowuj nowe przedmioty.",
+heroEyebrow:"TWOJA PRZYGODA ZACZYNA SIĘ TERAZ",heroTitle:"Zostań legendą gamingu.",
+heroText:"Sprawdź swoją wiedzę o grach, zdobywaj monety, ulepszaj konto i buduj swoją kolekcję.",
+play:"▶ ZAGRAJ TERAZ",money:"Monety",level:"Poziom",streak:"Seria",
+progress:"Postęp konta",xpHint:"Zdobywaj doświadczenie, żeby awansować na kolejny poziom.",
+featured:"🎯 Gotowy na wyzwanie?",featuredText:"Każda poprawna odpowiedź daje monety i doświadczenie. Im dłuższa seria, tym większa nagroda!",
+startChallenge:"Rozpocznij wyzwanie →",quizTitle:"🧠 Gaming Quiz",shopTitle:"🛍️ Sklep",
+shopDesc:"Wydawaj monety na swoją kolekcję.",inventoryTitle:"🎒 Twój ekwipunek",
+settingsTitle:"⚙️ Ustawienia",language:"Język",languageDesc:"Wybierz język interfejsu.",
+sound:"Dźwięki",soundDesc:"Efekty dźwiękowe w grze.",theme:"Motyw",
+themeDesc:"Wybierz wygląd gry.",customColor:"Kolor motywu",colorDesc:"Wybierz swój własny kolor.",
+reset:"Reset gry",resetDesc:"Usuń zapisane postępy i zacznij od nowa.",resetButton:"Resetuj",
+footer:"Twój gamingowy progres zaczyna się tutaj.",question:"Pytanie",of:"z",correct:"Poprawnie!",
+wrong:"Nie tym razem!",next:"Następne pytanie →",finish:"Zakończ quiz",reward:"Nagroda",
+correctAnswer:"Poprawna odpowiedź:",startAgain:"Zagraj ponownie",noItems:"Nie masz jeszcze żadnych przedmiotów. Odwiedź sklep!",
+buy:"Kup",owned:"Posiadane",equip:"Załóż",equipped:"Założone",insufficient:"Za mało monet!",
+purchased:"Przedmiot kupiony!",equippedMsg:"Założono przedmiot!",levelUp:"Awans na poziom",
+runComplete:"Quiz zakończony!",earned:"Zdobyte monety",earnedXP:"Zdobyte XP",
+soundOn:"Dźwięki włączone",soundOff:"Dźwięki wyłączone",resetConfirm:"Na pewno usunąć cały postęp? Tego nie da się cofnąć.",
+resetDone:"Postęp zresetowany.",correctFeedback:"Dobra robota! Zdobywasz nagrodę.",wrongFeedback:"Nie poddawaj się! Spróbuj kolejnego pytania.",
+quizEmpty:"Brak pytań.",shopEmpty:"Wszystko już masz!",homeTitle:"Start",price:"Cena",yourAnswer:"Twoja odpowiedź",
+xp:"XP",bestStreak:"Najlepsza seria",customHint:"Wybierz motyw Custom, aby zmienić kolor.",
+daily:"Gamingowe RPG",newRecord:"Nowy rekord serii!",tryAgain:"Spróbuj ponownie"
+},
+en:{
+home:"Home",quiz:"Quiz",shop:"Shop",inventory:"Inventory",settings:"Settings",
+sideNote:"Answer correctly, earn XP and unlock new items.",
+heroEyebrow:"YOUR ADVENTURE STARTS NOW",heroTitle:"Become a gaming legend.",
+heroText:"Test your gaming knowledge, earn coins, upgrade your account and build your collection.",
+play:"▶ PLAY NOW",money:"Coins",level:"Level",streak:"Streak",
+progress:"Account progress",xpHint:"Earn experience to advance to the next level.",
+featured:"🎯 Ready for a challenge?",featuredText:"Every correct answer gives coins and experience. The longer your streak, the bigger the reward!",
+startChallenge:"Start challenge →",quizTitle:"🧠 Gaming Quiz",shopTitle:"🛍️ Shop",
+shopDesc:"Spend coins on your collection.",inventoryTitle:"🎒 Your inventory",
+settingsTitle:"⚙️ Settings",language:"Language",languageDesc:"Choose the interface language.",
+sound:"Sounds",soundDesc:"In-game sound effects.",theme:"Theme",
+themeDesc:"Choose the game's appearance.",customColor:"Theme color",colorDesc:"Choose your own color.",
+reset:"Reset game",resetDesc:"Delete your progress and start over.",resetButton:"Reset",
+footer:"Your gaming progress starts here.",question:"Question",of:"of",correct:"Correct!",
+wrong:"Not this time!",next:"Next question →",finish:"Finish quiz",reward:"Reward",
+correctAnswer:"Correct answer:",startAgain:"Play again",noItems:"You don't have any items yet. Visit the shop!",
+buy:"Buy",owned:"Owned",equip:"Equip",equipped:"Equipped",insufficient:"Not enough coins!",
+purchased:"Item purchased!",equippedMsg:"Item equipped!",levelUp:"Level up",
+runComplete:"Quiz completed!",earned:"Coins earned",earnedXP:"XP earned",
+soundOn:"Sounds enabled",soundOff:"Sounds disabled",resetConfirm:"Delete all progress? This cannot be undone.",
+resetDone:"Progress reset.",correctFeedback:"Well done! You earned a reward.",wrongFeedback:"Don't give up! Try the next question.",
+quizEmpty:"No questions.",shopEmpty:"You own everything!",homeTitle:"Home",price:"Price",yourAnswer:"Your answer",
+xp:"XP",bestStreak:"Best streak",customHint:"Choose the Custom theme to change the color.",
+daily:"Gaming RPG",newRecord:"New streak record!",tryAgain:"Try again"
+}};
 const questions=[
-{q:"Która postać jest znana jako Czarna Wdowa?",a:["Natasha Romanoff","Wanda Maximoff","Carol Danvers","Hope van Dyne"],c:0},
-{q:"W jakiej grze naprawia się generatory, uciekając przed zabójcą?",a:["Fortnite","Dead by Daylight","Minecraft","Overwatch 2"],c:1},
-{q:"Jak nazywa się młot Thora?",a:["Stormbreaker","Mjolnir","Excalibur","Gungnir"],c:1},
-{q:"Kto jest jednym z głównych bohaterów Spider-Man 2?",a:["Peter Parker","Tony Stark","Steve Rogers","Bruce Banner"],c:0},
-{q:"Jaki gatunek reprezentuje Minecraft?",a:["Wyłącznie wyścigi","Sandbox","Symulator lotu","Bijatyka"],c:1},
-{q:"Który przeciwnik walczy ze Spider-Manem?",a:["Joker","Bowser","Green Goblin","Ganondorf"],c:2},
-{q:"Co robisz głównie w Fortnite Battle Royale?",a:["Walczysz o zwycięstwo","Naprawiasz generatory","Gotujesz potrawy","Budujesz tory kolejowe"],c:0},
-{q:"Z jakiej serii pochodzi Leon S. Kennedy?",a:["Resident Evil","The Sims","Rocket League","Forza Horizon"],c:0},
-{q:"Która firma stworzyła PlayStation?",a:["Microsoft","Nintendo","Sony","Sega"],c:2},
-{q:"Która postać należy do Avengers?",a:["Shrek","Iron Man","Geralt","Lara Croft"],c:1},
-{q:"Na jakiej platformie tworzy się gry w Roblox?",a:["Roblox Studio","Steam Studio","PlayStation Maker","Xbox Creator"],c:0},
-{q:"Jak nazywa się główny bohater God of War?",a:["Kratos","Nathan Drake","Ezio","Arthur Morgan"],c:0},
-{q:"Która gra jest znana z budowania z bloków?",a:["Minecraft","Tekken","FIFA","Gran Turismo"],c:0},
-{q:"Kto jest przyjacielem Spider-Mana i również ma pajęcze moce?",a:["Miles Morales","Thanos","Loki","Hawkeye"],c:0},
-{q:"Jaki jest cel ocalałych w Dead by Daylight?",a:["Naprawić generatory i uciec","Zdobyć puchar","Pokonać smoka","Zbudować dom"],c:0},
-{q:"Jak nazywa się konsola Nintendo?",a:["Switch","PlayStation","Xbox","Steam Machine"],c:0}
+{q:"Która firma stworzyła Minecrafta?",a:["Mojang","Valve","Epic Games","Ubisoft"],c:0,cat:"Minecraft"},
+{q:"Jak nazywa się główny bohater serii God of War?",a:["Dante","Kratos","Geralt","Ezio"],c:1,cat:"God of War"},
+{q:"W jakiej grze naprawia się generatory, uciekając przed zabójcą?",a:["Fortnite","Valorant","Dead by Daylight","Minecraft"],c:2,cat:"Dead by Daylight"},
+{q:"Jak nazywa się bohater Marvela, który używa młota Mjolnir?",a:["Iron Man","Thor","Hawkeye","Ant-Man"],c:1,cat:"Marvel"},
+{q:"Która firma stworzyła PlayStation?",a:["Microsoft","Nintendo","Sony","Sega"],c:2,cat:"Konsole"},
+{q:"Jak nazywa się wyspa w Fortnite, na której walczą gracze?",a:["Mapa","Battle Island","Wyspa","Arena"],c:2,cat:"Fortnite"},
+{q:"Która postać jest głównym bohaterem serii The Legend of Zelda?",a:["Mario","Link","Kirby","Samus"],c:1,cat:"Nintendo"},
+{q:"Jak nazywa się waluta premium w Fortnite?",a:["Minecoins","V-Bucks","Robux","Gems"],c:1,cat:"Fortnite"},
+{q:"Która gra zawiera postać o imieniu Leon S. Kennedy?",a:["Resident Evil","The Sims","Overwatch","Apex Legends"],c:0,cat:"Resident Evil"},
+{q:"W jakiej grze budujesz z bloków i eksplorujesz świat?",a:["FIFA","Minecraft","Tekken","Among Us"],c:1,cat:"Minecraft"},
+{q:"Jak nazywa się sieciowa gra z agentami i podkładaniem Spike'a?",a:["Valorant","Rocket League","Fall Guys","Terraria"],c:0,cat:"Valorant"},
+{q:"Która postać Marvela jest znana jako Czarna Pantera?",a:["T'Challa","Peter Parker","Steve Rogers","Clint Barton"],c:0,cat:"Marvel"},
+{q:"Co robisz, aby wygrać w wyścigu w Mario Kart?",a:["Zbierasz diamenty","Docierasz do mety","Budujesz bazę","Łapiesz duchy"],c:1,cat:"Mario Kart"},
+{q:"Jak nazywa się popularna platforma do tworzenia gier z awatarami?",a:["Roblox","Spotify","Discord","Twitch"],c:0,cat:"Roblox"},
+{q:"Który bohater używa sieci do przemieszczania się po Nowym Jorku?",a:["Batman","Spider-Man","Wolverine","Hulk"],c:1,cat:"Marvel"},
+{q:"Jaki jest cel załogi w Among Us?",a:["Zbudować dom","Wykonać zadania i wykryć oszustów","Zebrać V-Bucks","Wygrać wyścig"],c:1,cat:"Among Us"},
+{q:"Która gra jest znana z trybu Battle Royale i budowania?",a:["Fortnite","Stardew Valley","The Sims 4","Portal 2"],c:0,cat:"Fortnite"},
+{q:"Jak nazywa się konsola Nintendo, którą można używać przenośnie i przy telewizorze?",a:["Dreamcast","Nintendo Switch","PS Vita","Xbox 360"],c:1,cat:"Nintendo"},
+{q:"W której grze występuje postać Chucky jako zabójca?",a:["Dead by Daylight","Minecraft","Forza Horizon","Splatoon"],c:0,cat:"Dead by Daylight"},
+{q:"Co oznacza skrót RPG w grach?",a:["Role-Playing Game","Rapid Player Goal","Real Play Graphics","Random Power Game"],c:0,cat:"Gaming"},
+{q:"Która firma stworzyła serię The Witcher?",a:["CD Projekt Red","Rockstar Games","Capcom","Bungie"],c:0,cat:"Gaming"},
+{q:"Jak nazywa się popularna gra o impostorach i załodze na statku?",a:["Among Us","Fall Guys","Palworld","Hades"],c:0,cat:"Gaming"},
+{q:"Który z tych tytułów to gra piłkarska?",a:["EA Sports FC","Elden Ring","Control","Subnautica"],c:0,cat:"Gaming"},
+{q:"Jak nazywa się bohater serii Metal Gear Solid?",a:["Solid Snake","Cloud Strife","Nathan Drake","Doom Slayer"],c:0,cat:"Gaming"}
 ];
-
-const products=[
-{id:"mult3",name:"💎 Mnożnik ×3",price:1200,desc:"Zwiększa nagrodę za poprawną odpowiedź.",type:"mult"},
-{id:"bonus2",name:"🔥 Bonus serii +200 $",price:800,desc:"Bonus za trzy poprawne odpowiedzi z rzędu.",type:"bonus"},
-{id:"dbd",name:"🎮 Dead by Daylight",price:500,desc:"Przedmiot kolekcjonerski.",type:"item"},
-{id:"hero",name:"🦸 Pakiet superbohatera",price:700,desc:"Pakiet skórek do kolekcji.",type:"item"},
-{id:"gg",name:"✨ Emotka GG",price:150,desc:"Dodaj emotkę do kolekcji.",type:"item"},
-{id:"dance",name:"💃 Emotka taneczna",price:250,desc:"Dodaj taniec do kolekcji.",type:"item"},
-{id:"dlc",name:"📦 Pakiet nowych przygód",price:400,desc:"Pakiet DLC do kolekcji.",type:"item"}
+const items=[
+{id:"neon",icon:"💜",name:{pl:"Neonowy profil",en:"Neon Profile"},desc:{pl:"Fioletowy styl dla twojego konta.",en:"A purple style for your account."},price:100},
+{id:"gg",icon:"😎",name:{pl:"Emotka GG",en:"GG Emote"},desc:{pl:"Pokaż, kto tu rządzi.",en:"Show everyone who's boss."},price:150},
+{id:"crown",icon:"👑",name:{pl:"Złota korona",en:"Golden Crown"},desc:{pl:"Królewski przedmiot kolekcjonerski.",en:"A royal collectible item."},price:300},
+{id:"glitch",icon:"👾",name:{pl:"Glitch skin",en:"Glitch Skin"},desc:{pl:"Cybernetyczny styl gracza.",en:"A cyber gamer style."},price:450},
+{id:"fire",icon:"🔥",name:{pl:"Aura ognia",en:"Fire Aura"},desc:{pl:"Płomienny efekt kolekcjonerski.",en:"A fiery collectible effect."},price:600},
+{id:"diamond",icon:"💎",name:{pl:"Diamentowy status",en:"Diamond Status"},desc:{pl:"Błyszczący status w ekwipunku.",en:"A shiny inventory status."},price:900},
+{id:"xpboost",icon:"⚡",name:{pl:"XP Booster",en:"XP Booster"},desc:{pl:"Na stałe +5 XP za poprawną odpowiedź.",en:"+5 permanent XP per correct answer."},price:500},
+{id:"coinboost",icon:"🪙",name:{pl:"Coin Booster",en:"Coin Booster"},desc:{pl:"Na stałe +5 monet za poprawną odpowiedź.",en:"+5 permanent coins per correct answer."},price:500}
 ];
-
-let currentQuestion=null;
-let locked=false;
-let used=[];
-
-function save(){
-try{localStorage.setItem("qlrpg_save",JSON.stringify(state));}catch(e){}
+const defaults={money:0,xp:0,level:1,streak:0,bestStreak:0,owned:[],equipped:null,language:"pl",sound:true,theme:"dark",customColor:"#9b6dff",totalCorrect:0,totalAnswered:0};
+let state={...defaults};
+try{const saved=localStorage.getItem("quizLifeRPG_v2");if(saved)state={...defaults,...JSON.parse(saved)}}catch(e){}
+let currentPage="home",round=[],roundIndex=0,answered=false,roundCoins=0,roundXP=0,runNumber=0,audioContext=null,noticeTimer;
+function save(){try{localStorage.setItem("quizLifeRPG_v2",JSON.stringify(state))}catch(e){}}
+function t(key){return translations[state.language]?.[key]||translations.pl[key]||key}
+function itemName(item){return item.name[state.language]||item.name.pl}
+function itemDesc(item){return item.desc[state.language]||item.desc.pl}
+function notify(message){const el=document.getElementById("notice");el.textContent=message;el.classList.add("show");clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>el.classList.remove("show"),2400)}
+function sound(type="click"){
+if(!state.sound)return;
+try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();const osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.connect(gain);gain.connect(audioContext.destination);osc.type="sine";osc.frequency.value=type==="correct"?720:type==="wrong"?190:430;gain.gain.setValueAtTime(.09,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.16);osc.start();osc.stop(audioContext.currentTime+.17)}catch(e){}
 }
-
-function showTab(tab){
-document.querySelectorAll(".tab").forEach(el=>el.classList.toggle("hidden",el.id!==tab));
-document.querySelectorAll("nav button").forEach(el=>el.classList.toggle("active",el.dataset.tab===tab));
-if(tab==="shop")renderShop();
-if(tab==="bag")renderBag();
-}
-
-document.querySelectorAll("nav button").forEach(btn=>{
-btn.addEventListener("click",()=>showTab(btn.dataset.tab));
-});
-
-function render(){
-document.getElementById("money").textContent=state.money+" $";
+function renderStats(){
+document.getElementById("money").textContent=state.money.toLocaleString();
 document.getElementById("level").textContent=state.level;
 document.getElementById("streak").textContent=state.streak;
-document.getElementById("total").textContent=state.total;
-document.getElementById("correct").textContent=state.correct;
-document.getElementById("best").textContent=state.best;
-const xp=state.correct%5;
-document.getElementById("xpbar").style.width=(xp*20)+"%";
-document.getElementById("xptext").textContent="Postęp poziomu: "+xp+"/5 poprawnych odpowiedzi";
-save();
+document.getElementById("headerCoins").textContent="🪙 "+state.money.toLocaleString();
+document.getElementById("shopBalance").textContent="🪙 "+state.money.toLocaleString();
+const need=state.level*100,progress=state.xp/need*100;
+document.getElementById("xpLabel").textContent=state.xp+" / "+need+" XP";
+document.getElementById("xpBar").style.width=Math.min(100,progress)+"%";
+document.getElementById("xpHint").textContent=state.language==="pl"?"Do następnego poziomu brakuje "+Math.max(0,need-state.xp)+" XP.":"You need "+Math.max(0,need-state.xp)+" XP for the next level.";
 }
-
+function navigate(page){
+currentPage=page;
+document.querySelectorAll("main section").forEach(el=>el.classList.add("hidden"));
+document.getElementById("page-"+page).classList.remove("hidden");
+document.querySelectorAll(".nav").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
+if(page==="shop")renderShop();if(page==="inventory")renderInventory();if(page==="settings")syncSettings();
+renderStats();window.scrollTo({top:0,behavior:"smooth"});
+}
 function startQuiz(){
-used=[];
-loadQuestion();
+round=questions.map((_,i)=>i).sort(()=>Math.random()-.5).slice(0,10);
+roundIndex=0;answered=false;roundCoins=0;roundXP=0;runNumber++;navigate("quiz");renderQuestion();
 }
-
-function loadQuestion(){
-locked=false;
-document.getElementById("feedback").classList.add("hidden");
-document.getElementById("next").classList.add("hidden");
-const answers=document.getElementById("answers");
-answers.innerHTML="";
-if(used.length===questions.length)used=[];
-let available=questions.map((q,i)=>i).filter(i=>!used.includes(i));
-let index=available[Math.floor(Math.random()*available.length)];
-used.push(index);
-currentQuestion=questions[index];
-document.getElementById("qtag").textContent="POZIOM "+state.level+" • PYTANIE "+(used.length);
-document.getElementById("question").textContent=currentQuestion.q;
-currentQuestion.a.forEach((answer,i)=>{
-const btn=document.createElement("button");
-btn.className="answer";
-btn.textContent=String.fromCharCode(65+i)+". "+answer;
-btn.onclick=()=>checkAnswer(i,btn);
-answers.appendChild(btn);
-});
+function renderQuestion(){
+const root=document.getElementById("quizContent");
+if(roundIndex>=round.length){renderResults();return}
+answered=false;const q=questions[round[roundIndex]];
+document.getElementById("quizBadge").textContent="RUN #"+runNumber;
+root.innerHTML=`<div class="quiz-top"><span>${escapeHTML(t("question"))} ${roundIndex+1} ${escapeHTML(t("of"))} ${round.length}</span><span>${escapeHTML(q.cat)}</span></div>
+<div class="progress"><div style="width:${roundIndex/round.length*100}%"></div></div>
+<div class="question">${escapeHTML(q.q)}</div>
+<div class="grid" id="answers">${q.a.map((a,i)=>`<button class="answer" data-answer="${i}"><span style="color:var(--accent2);margin-right:8px">${String.fromCharCode(65+i)}.</span>${escapeHTML(a)}</button>`).join("")}</div>
+<div id="feedback"></div>`;
+root.querySelectorAll("[data-answer]").forEach(btn=>btn.addEventListener("click",()=>chooseAnswer(Number(btn.dataset.answer))));
 }
-
-function checkAnswer(index,button){
-if(locked)return;
-locked=true;
-state.total++;
-document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
-const feedback=document.getElementById("feedback");
-feedback.classList.remove("hidden");
-if(index===currentQuestion.c){
-state.correct++;
-state.streak++;
-state.best=Math.max(state.best,state.streak);
-let reward=100*state.multiplier;
-let message="Poprawna odpowiedź! Zdobywasz "+reward+" $.";
-state.money+=reward;
-if(state.bonus&&state.streak%3===0){
-state.money+=100;
-message+=" Bonus serii: +100 $.";
+function chooseAnswer(index){
+if(answered)return;answered=true;
+const q=questions[round[roundIndex]],correct=index===q.c;
+document.querySelectorAll("[data-answer]").forEach((btn,i)=>{btn.disabled=true;if(i===q.c)btn.classList.add("correct");if(i===index&&!correct)btn.classList.add("wrong")});
+let nextLevel=state.level;
+if(correct){
+const bonus=(state.streak>=4?5:0)+(state.owned.includes("coinboost")?5:0);
+const coins=20+bonus,xp=25+(state.owned.includes("xpboost")?5:0);
+state.money+=coins;state.xp+=xp;state.streak++;state.bestStreak=Math.max(state.bestStreak,state.streak);state.totalCorrect++;roundCoins+=coins;roundXP+=xp;
+while(state.xp>=state.level*100){state.xp-=state.level*100;state.level++;sound("correct");notify(t("levelUp")+" "+state.level+"!")}sound("correct");
+}else{state.streak=0; sound("wrong")}
+state.totalAnswered++;save();renderStats();
+document.getElementById("feedback").innerHTML=`<div class="feedback"><b>${correct?"✅ "+escapeHTML(t("correct")):"❌ "+escapeHTML(t("wrong"))}</b><p>${escapeHTML(correct?t("correctFeedback"):t("correctAnswer")+" "+q.a[q.c])}</p>${correct?`<span class="coins">+${20+(state.streak>1?0:0)+(state.owned.includes("coinboost")?5:0)} 🪙</span> · <span>+${25+(state.owned.includes("xpboost")?5:0)} XP</span>`:""}<div style="margin-top:12px"><button class="btn" onclick="nextQuestion()">${roundIndex===round.length-1?t("finish"):t("next")}</button></div></div>`;
 }
-button.style.borderColor="#66edb2";
-feedback.textContent="✅ "+message;
-if(state.correct%5===0){
-state.level++;
-feedback.textContent+=" Awans! Wchodzisz na poziom "+state.level+"!";
+function nextQuestion(){roundIndex++;renderQuestion()}
+function renderResults(){
+document.getElementById("quizContent").innerHTML=`<div class="empty"><div style="font-size:50px">🏆</div><h2>${escapeHTML(t("runComplete"))}</h2><p>${escapeHTML(t("earned"))}: <b class="coins">+${roundCoins} 🪙</b></p><p>${escapeHTML(t("earnedXP"))}: <b>+${roundXP} XP</b></p><p>${escapeHTML(t("bestStreak"))}: <b>${state.bestStreak}</b></p><button class="btn" onclick="startQuiz()">${escapeHTML(t("startAgain"))}</button> <button class="secondary" onclick="navigate('home')">${escapeHTML(t("homeTitle"))}</button></div>`;
 }
-}else{
-state.streak=0;
-button.style.borderColor="#ff7777";
-feedback.textContent="❌ Nie tym razem! Poprawna odpowiedź: "+currentQuestion.a[currentQuestion.c]+".";
-}
-document.getElementById("next").classList.remove("hidden");
-render();
-}
-
-function nextQuestion(){loadQuestion();}
-
 function renderShop(){
-const box=document.getElementById("shopitems");
-box.innerHTML="";
-products.forEach(p=>{
-const owned=state.bought.includes(p.id);
-const item=document.createElement("div");
-item.className="item";
-const title=document.createElement("h3");
-title.textContent=p.name;
-const desc=document.createElement("p");
-desc.className="muted";
-desc.textContent=p.desc;
-const price=document.createElement("p");
-price.textContent="💰 "+p.price+" $";
-const btn=document.createElement("button");
-btn.className="primary";
-btn.textContent=owned?"JUŻ KUPIONO": "KUP";
-btn.disabled=owned||state.money<p.price;
-btn.onclick=()=>buy(p);
-item.append(title,desc,price,btn);
-box.appendChild(item);
-});
+const root=document.getElementById("shopGrid");
+root.innerHTML=items.map(item=>{
+const owned=state.owned.includes(item.id),isBoost=item.id==="xpboost"||item.id==="coinboost";
+return `<article class="shop-item"><div class="item-icon">${item.icon}</div><h3>${escapeHTML(itemName(item))}</h3><p class="muted" style="font-size:12px;margin:0">${escapeHTML(itemDesc(item))}</p><div class="item-price">🪙 ${item.price}</div><button class="${owned?"secondary":"btn"}" ${owned?"disabled":""} onclick="buyItem('${item.id}')">${owned?escapeHTML(t("owned")):escapeHTML(t("buy"))}</button></article>`;
+}).join("");
 }
-
-function buy(p){
-if(state.bought.includes(p.id)||state.money<p.price)return;
-state.money-=p.price;
-state.bought.push(p.id);
-if(p.type==="mult")state.multiplier=3;
-if(p.type==="bonus")state.bonus=true;
-if(p.type==="item")state.items.push(p.name.replace(/^[^ ]+ /,""));
-render();
-renderShop();
-renderBag();
+function buyItem(id){
+const item=items.find(i=>i.id===id);if(!item)return;
+if(state.owned.includes(id)){notify(t("owned"));return}
+if(state.money<item.price){notify(t("insufficient"));sound("wrong");return}
+state.money-=item.price;state.owned.push(id);state.equipped=id;save();sound("correct");renderStats();renderShop();notify(t("purchased"));
 }
-
-function renderBag(){
-const box=document.getElementById("inventory");
-box.innerHTML="";
-if(!state.items.length){
-box.textContent="Twój ekwipunek jest pusty.";
+function renderInventory(){
+const root=document.getElementById("inventoryGrid");
+document.getElementById("itemCount").textContent=state.owned.length+" ITEMS";
+const owned=items.filter(i=>state.owned.includes(i.id));
+if(!owned.length){root.innerHTML=`<div class="empty" style="grid-column:1/-1"><div style="font-size:40px">🎒</div><p>${escapeHTML(t("noItems"))}</p><button class="btn" onclick="navigate('shop')">${escapeHTML(t("shop"))}</button></div>`;return}
+root.innerHTML=owned.map(item=>`<article class="shop-item"><div class="item-icon">${item.icon}</div><h3>${escapeHTML(itemName(item))}</h3><p class="muted" style="font-size:12px">${escapeHTML(itemDesc(item))}</p><button class="${state.equipped===item.id?"secondary":"btn"}" onclick="equipItem('${item.id}')">${escapeHTML(state.equipped===item.id?t("equipped"):t("equip"))}</button></article>`).join("");
+}
+function equipItem(id){state.equipped=id;save();renderInventory();notify(t("equippedMsg"));sound("click")}
+function syncSettings(){
+document.getElementById("languageSelect").value=state.language;
+document.getElementById("soundToggle").checked=state.sound;
+document.getElementById("themeSelect").value=state.theme;
+document.getElementById("colorPicker").value=state.customColor;
+document.getElementById("colorRow").style.opacity=state.theme==="custom"?"1":".45";
+}
+function setLanguage(lang){state.language=lang;save();applyTranslations();renderStats();if(currentPage==="shop")renderShop();if(currentPage==="inventory")renderInventory();if(currentPage==="quiz"&&round.length)renderQuestion();syncSettings()}
+function setSound(value){state.sound=value;save();notify(value?t("soundOn"):t("soundOff"));if(value)sound("click")}
+function setTheme(theme){state.theme=theme;applyTheme();save();syncSettings();sound("click")}
+function setCustomColor(color){state.customColor=color;if(state.theme==="custom")applyTheme();save()}
+function applyTheme(){
+const root=document.documentElement;
+if(state.theme==="white"){
+root.style.setProperty("--bg","#f2f3f9");root.style.setProperty("--panel","#ffffff");root.style.setProperty("--panel2","#ececf5");root.style.setProperty("--text","#202033");root.style.setProperty("--muted","#6c6c83");root.style.setProperty("--border","#16163312");root.style.setProperty("--accent","#7350e6");root.style.setProperty("--accent2","#5143b5");
 }else{
-state.items.forEach(item=>{
-const div=document.createElement("div");
-div.className="item";
-div.textContent="🎁 "+item;
-box.appendChild(div);
-});
+root.style.setProperty("--bg","#0b0b13");root.style.setProperty("--panel","#141421");root.style.setProperty("--panel2","#202033");root.style.setProperty("--text","#f6f5ff");root.style.setProperty("--muted","#9999b5");root.style.setProperty("--border","#ffffff12");root.style.setProperty("--accent",state.theme==="custom"?state.customColor:"#9b6dff");root.style.setProperty("--accent2",state.theme==="custom"?state.customColor:"#5ee7ff");
 }
-const stats=document.createElement("div");
-stats.className="item";
-stats.innerHTML="<b>Ulepszenia</b><p class='muted'>Mnożnik nagrody: ×"+state.multiplier+"</p><p class='muted'>Bonus serii: "+(state.bonus?"aktywny":"nieaktywny")+"</p>";
-box.appendChild(stats);
+document.querySelector('meta[name="theme-color"]').content=state.theme==="white"?"#f2f3f9":state.theme==="custom"?state.customColor:"#10101c";
 }
-
+function applyTranslations(){
+document.documentElement.lang=state.language;
+document.querySelectorAll("[data-i]").forEach(el=>{const key=el.dataset.i;if(t(key))el.textContent=t(key)});
+applyTheme();renderStats();
+}
 function resetGame(){
-if(!confirm("Na pewno zresetować cały postęp?"))return;
-try{localStorage.removeItem("qlrpg_save");}catch(e){}
-state={...initial,items:[...initial.items],bought:[]};
-used=[];
-render();
-renderBag();
-renderShop();
-showTab("home");
+if(!confirm(t("resetConfirm")))return;
+state={...defaults,owned:[]};save();applyTranslations();navigate("home");notify(t("resetDone"));renderStats();
 }
-
-render();
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+applyTranslations();renderStats();syncSettings();
 </script>
 </body>
 </html>
